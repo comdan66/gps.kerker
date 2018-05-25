@@ -18,6 +18,12 @@ class Cli extends Controller {
     ini_set ('set_time_limit', 60 * 60);
   }
 
+  public function clearSession () {
+    Load::sysFunc ('directory.php');
+    $k = config ('session', 'cookie_name');
+    $files = array_filter (array_filter (directory_map (FCPATH . 'session'), function ($t) use ($k) { return  preg_match ("/^" . $k . "/i", $t); }), function ($t) { return !@unlink (FCPATH . 'session' . DIRECTORY_SEPARATOR .  $t); }) && gg ('有刪除失敗的！');
+  }
+
   public function backupDB () {
     if (!$backup = Backup::create (array ('file' => '', 'size' => 0, 'type' => Backup::TYPE_DATABASE, 'status' => Backup::STATUS_FAILURL, 'read' => Backup::READ_NO, 'time_at' => date ('Y-m-d H:i:s'))))
       gg ('資料庫建立失敗！');

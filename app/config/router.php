@@ -9,6 +9,10 @@
 
 Router::get ('', 'Main@index');
 
+Router::dir ('api', function () {
+  Router::post ('locations', 'Locations@create');
+});
+
 Router::dir ('admin', function () {
   Router::get ('', 'Main');
 

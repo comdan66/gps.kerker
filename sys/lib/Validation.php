@@ -172,13 +172,13 @@ class Validation {
   // >=
   private function _greaterEqual ($num) {
     $this->isNumber ();
-    $this->val < $num || Validation::error ($this->title . '需大於以及等於 ' . $num);
+    $this->val >= $num || Validation::error ($this->title . '需大於以及等於 ' . $num);
   }
 
   // <=
   private function _lessEqual ($num) {
     $this->isNumber ();
-    $this->val < $num || Validation::error ($this->title . '需小於以及等於 ' . $num);
+    $this->val <= $num || Validation::error ($this->title . '需小於以及等於 ' . $num);
   }
 
   // !=

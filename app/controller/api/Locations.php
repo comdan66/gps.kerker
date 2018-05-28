@@ -25,7 +25,6 @@ class Locations extends ApiController {
       
       Validation::need ($posts, 'speed', '速度')->isNumber ()->doTrim ()->greaterEqual (0);
       Validation::need ($posts, 'course', '方向角度')->isNumber ()->doTrim ()->greaterEqual (0);
-      Validation::need ($posts, 'floor', '樓層')->isNumber ()->doTrim ();
     };
 
     $transaction = function($posts) {

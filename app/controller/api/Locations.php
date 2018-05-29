@@ -18,7 +18,7 @@ class Locations extends ApiController {
     Load::sysFunc ('date.php');
 
     $validation = function(&$posts) {
-      $posts['point'] = array_values (array_filter ($posts['point'], function ($point) {
+      $posts['point'] = array_values (array_filter ($posts['point'], array_map (function ($point) {
         if (!isset ($point['id'], $point['latitude'], $point['longitude'], $point['altitude'], $point['horizontal_accuracy'], $point['vertical_accuracy'], $point['speed'], $point['course'], $point['time'], $point['battery']))
           return null;
 
@@ -50,10 +50,10 @@ class Locations extends ApiController {
             return null;
        
         if (!(is_numeric ($point['battery']) && $point['battery'] >= 0 && $point['battery'] <= 100))
-          $point['battery'] = "X";
+          $point['battery'] = null;
 
         return $point;
-      }));
+      }, $posts)));
 
       usort ($posts['point'], function ($a, $b) {
         return $a['id'] > $b['id'];

@@ -50,7 +50,7 @@ class Locations extends ApiController {
             return null;
        
         if (!(is_numeric ($point['battery']) && $point['battery'] >= 0 && $point['battery'] <= 100))
-          $point['battery'] = null;
+          $point['battery'] = "X";
 
         return $point;
       }));
@@ -73,8 +73,9 @@ class Locations extends ApiController {
     if ($error = Validation::form ($validation, $posts))
       return Output::json($error, 400);
 Log::info (json_encode($posts['point']));
-    if ($error = Location::getTransactionError ($transaction, $posts))
-      return Output::json($error, 400);
+    
+    // if ($error = Location::getTransactionError ($transaction, $posts))
+    //   return Output::json($error, 400);
 
     return Output::json(['message' => '成功']);
   }

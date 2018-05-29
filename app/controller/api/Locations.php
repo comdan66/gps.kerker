@@ -18,7 +18,7 @@ class Locations extends ApiController {
     Load::sysFunc ('date.php');
 
     $validation = function(&$posts) {
-      $posts['point'] = array_values (array_filter (array_map (function ($point) {
+      $posts['points'] = array_values (array_filter (array_map (function ($point) {
         if (!isset ($point['id'], $point['latitude'], $point['longitude'], $point['altitude'], $point['horizontal_accuracy'], $point['vertical_accuracy'], $point['speed'], $point['course'], $point['time'], $point['battery']))
           return null;
 
@@ -53,17 +53,17 @@ class Locations extends ApiController {
           $point['battery'] = null;
 
         return $point;
-      }, $posts)));
+      }, $posts['points'])));
 
-      usort ($posts['point'], function ($a, $b) {
+      usort ($posts['points'], function ($a, $b) {
         return $a['id'] > $b['id'];
       });
 
-      $posts['point'] = array_map (function ($point) { unset ($point['id']); return $point; }, $posts['point']);
+      $posts['points'] = array_map (function ($point) { unset ($point['id']); return $point; }, $posts['points']);
     };
 
     $transaction = function($posts) {
-      foreach ($posts['point'] as $point)
+      foreach ($posts['points'] as $point)
         Location::create ($point);
       return true;
     };

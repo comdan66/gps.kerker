@@ -17,7 +17,7 @@ class Locations extends ApiController {
   public function key () {
     if (!$event = Event::create (array ('name' => date ('Y-m-d H:i:s'))))
       return Output::json('新增失敗', 400);
-    return Output::json(array ('id' => $event->id, 'name' => $event->name));
+    return Output::json(array ('id' => (int)$event->id, 'name' => $event->name));
   }
   public function create () {
     Load::sysFunc ('date.php');

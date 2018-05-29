@@ -74,6 +74,7 @@ class Locations extends ApiController {
     
     if ($error = Location::getTransactionError ($transaction, $posts, $ids))
       return Output::json($error, 400);
+      return Output::json($error, 400);
 
     return Output::json(['ids' => $ids]);
   }

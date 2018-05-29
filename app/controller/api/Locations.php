@@ -62,9 +62,11 @@ class Locations extends ApiController {
       $posts['points'] = array_map (function ($point) { unset ($point['id']); return $point; }, $posts['points']);
     };
 
-    $transaction = function($posts) {
+    $transaction = function($posts, &$ids) {
       foreach ($posts['points'] as $point)
-        Location::create ($point);
+        if ($obj = Location::create ($point))
+          array_push ($ids, $obj);
+
       return true;
     };
 
@@ -72,11 +74,10 @@ class Locations extends ApiController {
 
     if ($error = Validation::form ($validation, $posts))
       return Output::json($error, 400);
-Log::info (json_encode($posts['points']));
     
-    // if ($error = Location::getTransactionError ($transaction, $posts))
-    //   return Output::json($error, 400);
+    if ($error = Location::getTransactionError ($transaction, $posts, $ids))
+      return Output::json($error, 400);
 
-    return Output::json(['message' => '成功']);
+    return Output::json(['ids' => $ids]);
   }
 }

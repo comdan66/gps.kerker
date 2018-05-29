@@ -79,6 +79,7 @@ class Locations extends ApiController {
     };
 
     $posts = Input::post ();
+    Log::info (json_encode($posts));
 
     if ($error = Validation::form ($validation, $posts))
       return Output::json($error, 400);

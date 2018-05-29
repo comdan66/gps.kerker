@@ -14,6 +14,11 @@ class Locations extends ApiController {
     parent::__construct ();
   }
 
+  public function key () {
+    if (!$event = Event::create (array ('name' => date ('Y-m-d H:i:s'))))
+      return Output::json('新增失敗', 400);
+    return Output::json(array ('id' => $event->id, 'name' => $event->name));
+  }
   public function create () {
     Load::sysFunc ('date.php');
 
@@ -45,7 +50,7 @@ class Locations extends ApiController {
 
         if (!(is_numeric ($point['course']) && $point['course'] >= 0 && $point['course'] <= 360))
           return null;
-          
+
         if (!(is_string($point['time']) && $point['time'] && is_datetime ($point['time'])))
             return null;
        

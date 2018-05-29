@@ -10,6 +10,7 @@
 Router::get ('', 'Main@index');
 
 Router::dir ('api', function () {
+  Router::get ('key', 'Locations@key');
   Router::post ('locations', 'Locations@create');
 });
 

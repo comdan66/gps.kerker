@@ -10,6 +10,7 @@
 return array (
     'up' => "CREATE TABLE `locations` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `event_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '事件',
       
       `latitude` double DEFAULT NULL COMMENT '緯度',
       `longitude` double DEFAULT NULL COMMENT '經度',

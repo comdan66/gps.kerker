@@ -7,7 +7,8 @@
  * @link        https://www.ioa.tw/
  */
 
-Router::get ('', 'Main@index');
+Router::get ('(:id)', 'Main@index($1)');
+Router::get ('path/(:id)', 'Main@path($1)');
 
 Router::dir ('api', function () {
   Router::get ('key', 'Locations@key');

@@ -63,6 +63,7 @@ class Locations extends ApiController {
     };
 
     $transaction = function($posts, &$ids) {
+      $ids || $ids = array ();
       foreach ($posts['points'] as $point)
         if ($obj = Location::create ($point))
           array_push ($ids, $obj);

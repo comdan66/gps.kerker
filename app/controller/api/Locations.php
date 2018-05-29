@@ -15,16 +15,49 @@ class Locations extends ApiController {
   }
 
   public function create () {
+    Load::sysFunc ('date.php');
+
     $validation = function(&$posts) {
-      Validation::need ($posts, 'latitude', '緯度')->isNumber ()->doTrim ()->greaterEqual (-90)->lessEqual (90);
-      Validation::need ($posts, 'longitude', '經度')->isNumber ()->doTrim ()->greaterEqual (-180)->lessEqual (180);
-      Validation::need ($posts, 'altitude', '高度')->isNumber ()->doTrim ();
-      
-      Validation::maybe ($posts, 'horizontal_accuracy', '水平準度', -1)->isNumber ()->doTrim ();
-      Validation::maybe ($posts, 'vertical_accuracy', '垂直準度', -1)->isNumber ()->doTrim ();
-      
-      Validation::need ($posts, 'speed', '速度')->isNumber ()->doTrim ()->greaterEqual (0);
-      Validation::need ($posts, 'course', '方向角度')->isNumber ()->doTrim ()->greaterEqual (0);
+      $posts['point'] = array_values (array_filter ($posts['point'], function ($point) {
+        if (!isset ($point['id'], $point['latitude'], $point['longitude'], $point['altitude'], $point['horizontal_accuracy'], $point['vertical_accuracy'], $point['speed'], $point['course'], $point['time'], $point['battery']))
+          return null;
+
+        if (!(is_numeric ($point['id']) && $point['id'] > 0))
+          return null;
+
+        if (!(is_numeric ($point['latitude']) && $point['latitude'] >= -90 && $point['latitude'] <= 90))
+          return null;
+
+        if (!(is_numeric ($point['longitude']) && $point['longitude'] >= -180 && $point['latitude'] <= 180))
+          return null;
+
+        if (!is_numeric ($point['altitude']))
+          return null;
+
+        if (!is_numeric ($point['horizontal_accuracy']))
+          $point['horizontal_accuracy'] = -1;
+
+        if (!is_numeric ($point['vertical_accuracy']))
+          $point['vertical_accuracy'] = -1;
+
+        if (!is_numeric ($point['speed']))
+          $point['speed'] = -1;
+
+        if (!(is_numeric ($point['course']) && $point['course'] >= 0 && $point['course'] <= 360))
+          return null;
+          
+        if (!(is_string($point['time']) && $point['time'] && is_datetime ($point['time'])))
+            return null;
+       
+        if (!(is_numeric ($point['battery']) && $point['battery'] >= 0 && $point['battery'] <= 100))
+          return null;
+
+        return $point;
+      }));
+
+       usort ($posts['point'], function ($a, $b) {
+        return $a['id'] > $b['id'];
+      });
     };
 
     $transaction = function($posts) {
@@ -32,14 +65,13 @@ class Locations extends ApiController {
     };
 
     $posts = Input::post ();
-    Log::info (json_encode($_POST));
-
-    return Output::json(json_encode($posts));
-
 
     if ($error = Validation::form ($validation, $posts))
       return Output::json($error, 400);
 
+echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+var_dump ($posts);
+exit ();
     if ($error = Location::getTransactionError ($transaction, $posts))
       return Output::json($error, 400);
 

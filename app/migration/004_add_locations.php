@@ -18,11 +18,14 @@ return array (
       `vertical_accuracy` double NOT NULL DEFAULT '-1' COMMENT '垂直準度，-1 代表無效',
       `speed` double NOT NULL DEFAULT '-1' COMMENT '速度 m/s，負數代表無效',
       `course` double DEFAULT NULL COMMENT '方向，北 0，南 180，東 90，西 270',
+      `floor` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '樓層',
+      `time` datetime DEFAULT NULL COMMENT 'GPS 裝置時間',
+      `battery` double DEFAULT NULL COMMENT 'GPS 裝置電量',
       
       `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
       `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
       PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
+    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
 
     'down' => "DROP TABLE `locations`;",
     'at' => "2018-05-27 15:11:44",

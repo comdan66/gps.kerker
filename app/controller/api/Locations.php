@@ -19,10 +19,10 @@ class Locations extends ApiController {
 
     $validation = function(&$posts) {
       $posts['points'] = array_values (array_filter (array_map (function ($point) {
-        if (!isset ($point['id'], $point['latitude'], $point['longitude'], $point['altitude'], $point['horizontal_accuracy'], $point['vertical_accuracy'], $point['speed'], $point['course'], $point['time'], $point['battery']))
+        if (!isset ($point['_id'], $point['latitude'], $point['longitude'], $point['altitude'], $point['horizontal_accuracy'], $point['vertical_accuracy'], $point['speed'], $point['course'], $point['time'], $point['battery']))
           return null;
 
-        if (!(is_numeric ($point['id']) && $point['id'] > 0))
+        if (!(is_numeric ($point['_id']) && $point['_id'] > 0))
           return null;
 
         if (!(is_numeric ($point['latitude']) && $point['latitude'] >= -90 && $point['latitude'] <= 90))
@@ -55,10 +55,6 @@ class Locations extends ApiController {
         return $point;
       }, $posts['points'])));
 
-      usort ($posts['points'], function ($a, $b) {
-        return $a['id'] > $b['id'];
-      });
-
       $posts['points'] = array_map (function ($point) { unset ($point['id']); return $point; }, $posts['points']);
     };
 
@@ -66,7 +62,7 @@ class Locations extends ApiController {
       $ids || $ids = array ();
       foreach ($posts['points'] as $point)
         if ($obj = Location::create ($point))
-          array_push ($ids, (int)$obj->id);
+          array_push ($ids, (int)$point['_id']);
 
       return true;
     };

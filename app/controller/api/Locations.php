@@ -23,7 +23,12 @@ class Locations extends ApiController {
     Load::sysFunc ('date.php');
 
     $validation = function(&$posts) {
-      $posts['points'] = array_values (array_filter (array_map (function ($point) {
+      Validation::need ($posts, 'id', '事件 ID')->isNumber ()->doTrim ()->greater (0);
+
+      if (!Event::find_by_id ($posts['id']))
+        Validation::error ('事件錯誤！');
+
+      $posts['points'] = array_values (array_filter (array_map (function ($point) use ($posts) {
         if (!isset ($point['_id'], $point['latitude'], $point['longitude'], $point['altitude'], $point['horizontal_accuracy'], $point['vertical_accuracy'], $point['speed'], $point['course'], $point['time'], $point['battery']))
           return null;
 
@@ -57,6 +62,7 @@ class Locations extends ApiController {
         if (!(is_numeric ($point['battery']) && $point['battery'] >= 0 && $point['battery'] <= 100))
           $point['battery'] = null;
 
+        $point['event_id'] = $posts['id'];
         return $point;
       }, $posts['points'])));
 

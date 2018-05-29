@@ -84,3 +84,30 @@
     }
   }
 }
+
+.point {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  border: 1px solid rgba(255, 0, 0, .3);
+  background-color: white;
+
+  @include border-radius(50%);
+
+  &:before {
+    content: '^';
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  @for $i from 0 through 360 {
+    &.r#{$i} {
+      @include rotate(#{$i}deg);
+    }
+  }
+
+}

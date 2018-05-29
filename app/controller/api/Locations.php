@@ -54,7 +54,7 @@ class Locations extends ApiController {
           $point['speed'] = -1;
 
         if (!(is_numeric ($point['course']) && $point['course'] >= 0 && $point['course'] <= 360))
-          return null;
+          $point['course'] = -1;
 
         if (!(is_string($point['time']) && $point['time'] && is_datetime ($point['time'])))
             return null;
@@ -63,10 +63,11 @@ class Locations extends ApiController {
           $point['battery'] = null;
 
         $point['event_id'] = $posts['id'];
+        
         return $point;
       }, $posts['points'])));
 
-      $posts['points'] = array_map (function ($point) { unset ($point['id']); return $point; }, $posts['points']);
+      // $posts['points'] = array_map (function ($point) { return $point; }, $posts['points']);
     };
 
     $transaction = function($posts, &$ids) {
@@ -79,7 +80,6 @@ class Locations extends ApiController {
     };
 
     $posts = Input::post ();
-    Log::info (json_encode($posts));
 
     if ($error = Validation::form ($validation, $posts))
       return Output::json($error, 400);

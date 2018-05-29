@@ -32,7 +32,8 @@ class Locations extends ApiController {
     };
 
     $posts = Input::post ();
-    Log::info (json_encode($posts));
+    Log::info (json_encode($_POST));
+
     return Output::json(json_encode($posts));
 
 

@@ -43,14 +43,14 @@ class Locations extends ApiController {
         if (!is_numeric ($point['speed']))
           $point['speed'] = -1;
 
-        // if (!(is_numeric ($point['course']) && $point['course'] >= 0 && $point['course'] <= 360))
-        //   return null;
+        if (!(is_numeric ($point['course']) && $point['course'] >= 0 && $point['course'] <= 360))
+          return null;
           
-        // if (!(is_string($point['time']) && $point['time'] && is_datetime ($point['time'])))
-        //     return null;
+        if (!(is_string($point['time']) && $point['time'] && is_datetime ($point['time'])))
+            return null;
        
-        // if (!(is_numeric ($point['battery']) && $point['battery'] >= 0 && $point['battery'] <= 100))
-        //   return null;
+        if (!(is_numeric ($point['battery']) && $point['battery'] >= 0 && $point['battery'] <= 100))
+          $point['battery'] = null;
 
         return $point;
       }));

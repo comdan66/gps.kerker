@@ -66,7 +66,10 @@ class Locations extends ApiController {
         
         return $point;
       }, $posts['points'])));
-
+      
+      usort ($posts['points'], function ($a, $b) {
+        return $a['_id'] > $b['_id'];
+      });
       // $posts['points'] = array_map (function ($point) { return $point; }, $posts['points']);
     };
 

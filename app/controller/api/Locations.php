@@ -55,13 +55,17 @@ class Locations extends ApiController {
         return $point;
       }));
 
-       usort ($posts['point'], function ($a, $b) {
+      usort ($posts['point'], function ($a, $b) {
         return $a['id'] > $b['id'];
       });
+
+      $posts['point'] = array_map (function ($point) { unset ($point['id']); return $point; }, $posts['point']);
     };
 
     $transaction = function($posts) {
-      return Location::create ($posts);
+      foreach ($posts['point'] as $point)
+        Location::create ($point);
+      return true;
     };
 
     $posts = Input::post ();
@@ -69,9 +73,6 @@ class Locations extends ApiController {
     if ($error = Validation::form ($validation, $posts))
       return Output::json($error, 400);
 
-echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump ($posts);
-exit ();
     if ($error = Location::getTransactionError ($transaction, $posts))
       return Output::json($error, 400);
 

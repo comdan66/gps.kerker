@@ -153,7 +153,7 @@ $(function () {
 
 
     var position = new google.maps.LatLng (23.79539759, 120.88256835);
-    _gmap = new google.maps.Map ($gmap.get (0), { zoom: 12, clickableIcons: false, disableDefaultUI: true, gestureHandling: 'greedy', center: position });
+    _gmap = new google.maps.Map ($gmap.get (0), { zoom: 7, clickableIcons: false, disableDefaultUI: true, gestureHandling: 'greedy', center: position });
 
     _gmap.mapTypes.set ('style1', new google.maps.StyledMapType ([{featureType: 'administrative.land_parcel', elementType: 'labels', stylers: [{visibility: 'on'}]}, {featureType: 'poi', elementType: 'labels.text', stylers: [{visibility: 'off'}]}, {featureType: 'poi.business', stylers: [{visibility: 'on'}]}, {featureType: 'poi.park', elementType: 'labels.text', stylers: [{visibility: 'on'}]}, {featureType: 'road.local', elementType: 'labels', stylers: [{visibility: 'on'}]}]));
     _gmap.setMapTypeId ('style1');

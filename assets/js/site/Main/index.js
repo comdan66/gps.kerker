@@ -134,8 +134,9 @@ $(function () {
         labelClass: 'point r' + parseInt (t._v.course, 10) });
     })
 
-    if (!f)
+    if (!f || !_ms.length)
       return;
+
     var bounds = new google.maps.LatLngBounds ();
     _ms.forEach (function (t, i) {
       bounds.extend (t.position);

@@ -15,7 +15,7 @@ class Main extends SiteController {
 
   public function path ($id) {
     $ids = array ();
-    $n1 = Location::getArray ('id', array ('where' => array ('event_id IN (?)', $id)));
+    $n1 = Location::getArray ('id', array ('where' => array ('event_id IN (?) AND speed >= ? AND horizontal_accuracy < ?', $id, 0, 50)));
 
     for ($i = 0, $c = count ($n1), $u = ($c - 100) / 400; $i < $c; $i += $i < 100 ? 1 : $u)
       if ($m = array_slice ($n1, $i, 1))
@@ -23,7 +23,7 @@ class Main extends SiteController {
 
     $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids)));
 
-    return Output::json (array_map (function ($l) {
+    $return = array_map (function ($l) {
       return array (
           'i' => $l->id,
           'a' => $l->latitude,
@@ -31,12 +31,14 @@ class Main extends SiteController {
           'd' => $l->altitude,
           'h' => $l->horizontal_accuracy,
           'v' => $l->vertical_accuracy,
-          's' => $l->speed >= 0 ? ceil ($l->speed * 3.6 / 10) : 0,
+          's' => ceil ($l->speed * 3.6),
           'c' => $l->course,
           't' => $l->time->format ('Y-m-d H:i:s'),
           'b' => $l->battery,
         );
-    }, $objs));
+    }, $objs);
+
+    return Output::json ($return);
   }
   public function index ($id) {
     // $location = 

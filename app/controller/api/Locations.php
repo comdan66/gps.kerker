@@ -23,61 +23,55 @@ class Locations extends ApiController {
     Load::sysFunc ('date.php');
 
     $validation = function(&$posts) {
-      Validation::need ($posts, 'id', '事件 ID')->isNumber ()->doTrim ()->greater (0);
+      Validation::need ($posts, 'i', '事件 ID')->isNumber ()->doTrim ()->greater (0);
 
-      if (!Event::find_by_id ($posts['id']))
+      if (!Event::find_by_id ($posts['i']))
         Validation::error ('事件錯誤！');
 
-      $posts['points'] = array_values (array_filter (array_map (function ($point) use ($posts) {
-        if (!isset ($point['_id'], $point['latitude'], $point['longitude'], $point['altitude'], $point['horizontal_accuracy'], $point['vertical_accuracy'], $point['speed'], $point['course'], $point['time'], $point['battery']))
+      $posts['p'] = array_values (array_filter (array_map (function ($p) use ($posts) {
+        if (!(isset ($p['i'], $p['a'], $p['n'], $p['d'], $p['h'], $p['v'], $p['s'], $p['c'], $p['t'], $p['b']) && is_numeric ($p['i']) && $p['i'] > 0 && is_numeric ($p['a']) && $p['a'] >= -90 && $p['a'] <= 90 && is_numeric ($p['n']) && $p['n'] >= -180 && $p['a'] <= 180 && is_numeric ($p['d']) && is_string($p['t']) && $p['t'] && is_datetime ($p['t'])))
           return null;
 
-        if (!(is_numeric ($point['_id']) && $point['_id'] > 0))
-          return null;
+        if (!is_numeric ($p['h']))
+          $p['h'] = -1;
 
-        if (!(is_numeric ($point['latitude']) && $point['latitude'] >= -90 && $point['latitude'] <= 90))
-          return null;
+        if (!is_numeric ($p['v']))
+          $p['v'] = -1;
 
-        if (!(is_numeric ($point['longitude']) && $point['longitude'] >= -180 && $point['latitude'] <= 180))
-          return null;
+        if (!is_numeric ($p['s']))
+          $p['s'] = -1;
 
-        if (!is_numeric ($point['altitude']))
-          return null;
+        if (!(is_numeric ($p['c']) && $p['c'] >= 0 && $p['c'] <= 360))
+          $p['c'] = -1;
 
-        if (!is_numeric ($point['horizontal_accuracy']))
-          $point['horizontal_accuracy'] = -1;
+        if (!(is_numeric ($p['b']) && $p['b'] >= 0 && $p['b'] <= 100))
+          $p['b'] = null;
 
-        if (!is_numeric ($point['vertical_accuracy']))
-          $point['vertical_accuracy'] = -1;
+        $p = array (
+          'event_id' => $posts['i'],
+          'latitude' => $p['a'],
+          'longitude' => $p['n'],
+          'altitude' => $p['d'],
+          'horizontal_accuracy' => $p['h'],
+          'vertical_accuracy' => $p['v'],
+          'speed' => $p['s'],
+          'course' => $p['c'],
+          'time' => $p['t'],
+          'battery' => $p['b'],
+          'ori_id' => $p['i'],
+        );
 
-        if (!is_numeric ($point['speed']))
-          $point['speed'] = -1;
+        return $p;
+      }, $posts['p'])));
 
-        if (!(is_numeric ($point['course']) && $point['course'] >= 0 && $point['course'] <= 360))
-          $point['course'] = -1;
-
-        if (!(is_string($point['time']) && $point['time'] && is_datetime ($point['time'])))
-            return null;
-       
-        if (!(is_numeric ($point['battery']) && $point['battery'] >= 0 && $point['battery'] <= 100))
-          $point['battery'] = null;
-
-        $point['event_id'] = $posts['id'];
-        
-        return $point;
-      }, $posts['points'])));
-      
-      usort ($posts['points'], function ($a, $b) {
-        return $a['_id'] > $b['_id'];
-      });
-      // $posts['points'] = array_map (function ($point) { return $point; }, $posts['points']);
+      usort ($posts['p'], function ($a, $b) { return $a['ori_id'] > $b['ori_id']; });
     };
 
     $transaction = function($posts, &$ids) {
       $ids || $ids = array ();
-      foreach ($posts['points'] as $point)
-        if ($obj = Location::create ($point))
-          array_push ($ids, (int)$point['_id']);
+      foreach ($posts['p'] as $p)
+        if ($obj = Location::create ($p))
+          array_push ($ids, $obj->ori_id);
 
       return true;
     };

@@ -21,6 +21,7 @@ return array (
       `course` double NOT NULL DEFAULT '-1' COMMENT '方向，北 0，南 180，東 90，西 270，-1 代表無效',
       `time` datetime DEFAULT NULL COMMENT 'GPS 裝置時間',
       `battery` double DEFAULT NULL COMMENT 'GPS 裝置電量',
+      `ori_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '原始 ID',
       
       `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
       `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',

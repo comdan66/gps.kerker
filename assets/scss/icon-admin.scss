@@ -2,8 +2,7 @@
 
 @include font-face("icomoon", font-files("admin/fonts/icomoon.eot", "admin/fonts/icomoon.woff", "admin/fonts/icomoon.ttf", "admin/fonts/icomoon.svg"));
 [class^="icon-"], [class*=" icon-"] {
-  font-family: "icomoon",Arial, '微軟正黑體', 'Microsoft JhengHei', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  speak: none; font-style: normal; font-weight: normal; font-variant: normal;
+  font-family: "icomoon", Arial, "微軟正黑體", "Microsoft JhengHei", -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"; speak: none; font-style: normal; font-weight: normal; font-variant: normal;
   @include font-smoothing(antialiased);
 }
 

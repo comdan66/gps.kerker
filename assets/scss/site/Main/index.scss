@@ -103,31 +103,73 @@
       text-align: center;
     }
   }
+
+  .duration, .length {
+
+    position: absolute;
+    bottom: 8px + 32px + 6px;
+    right: 8px + 35px + 8px;
+    display: none;
+    &.s {
+      display: inline-block;
+    }
+
+    height: 32px;
+    line-height: 32px;
+    z-index: 2;
+    background-color: white;
+    padding-left: 8px;
+    padding-right: 8px;
+    @include box-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
+    @include border-radius(3px);
+    &:before, &:after {
+      font-size: 10px;
+    }
+  }
+  .length {
+    &:before {
+      content: '累計：';
+    }
+    &:after {
+      content: ' 公里';
+    }
+  }
+  .duration {
+    bottom: 8px;
+    
+    &:empty {
+      display: none !important;
+    }
+    &:before {
+      content: '耗時：';
+    }
+  }
 }
 
 .point {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
-  border: 1px solid rgba(255, 0, 0, .3);
+  line-height: 20px;
   background-color: white;
-
   @include border-radius(50%);
+  @include box-shadow(0 0 1px rgba(0, 0, 0, .5));
 
   &:before {
-    content: '^';
+    font-family: "icomoon", Arial, "微軟正黑體", "Microsoft JhengHei", -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"; speak: none; font-style: normal; font-weight: normal; font-variant: normal;
+    content: "\e900";
     display: inline-block;
-    width: 100%;
-    height: 100%;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 10px;
+    text-align: center;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: calc(50% - 20px / 2);
+    top: calc(50% - 20px / 2);
+    font-weight: bold;
   }
   @for $i from 0 through 360 {
-    &.r#{$i} {
+    &.r#{$i}:before {
       @include rotate(#{$i}deg);
     }
   }
-
 }

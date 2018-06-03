@@ -134,9 +134,9 @@ $(function () {
         b: t[9],
       }; });
 
-      if (result.d.length) $_duration.addClass ('s').text (result.d);
-      if (result.l >= 0)   $_length.addClass ('s').text (ful (result.l));
       if (result.t > 0)    $_timeago.addClass ('s').text ($.OATA (result.t * 1000));
+      if (result.l > 0)   $_length.addClass ('s').text (ful (result.l));
+      if (result.d.length) $_duration.addClass ('s').text (result.d);
 
       rePath (first);
     }).complete (function () { _ajax = false; });

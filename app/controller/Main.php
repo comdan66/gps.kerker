@@ -19,7 +19,7 @@ class Main extends SiteController {
   }
   public function path ($id) {
     $ids = array ();
-    $n1 = Location::getArray ('id', array ('where' => array ('event_id IN (?) AND speed >= ? AND horizontal_accuracy < ?', $id, 0, 50)));
+    $n1 = Location::getArray ('id', array ('where' => array ('event_id IN (?) AND speed >= ? AND horizontal_accuracy <= ?', $id, 0, 65)));
 
     for ($i = 0, $c = count ($n1), $u = ($c - 100) / 400; $i < $c; $i += $i < 100 ? 1 : $u)
       if ($m = array_slice ($n1, $i, 1))

@@ -29,27 +29,27 @@ class Main extends SiteController {
 
     $objs = array_map (function ($l) {
       return array (
-          'i' => $l->id,
-          'a' => $l->latitude,
-          'n' => $l->longitude,
-          'd' => $l->altitude,
-          'h' => $l->horizontal_accuracy,
-          'v' => $l->vertical_accuracy,
-          's' => ceil ($l->speed * 3.6),
-          'c' => $l->course,
-          't' => $l->time->format ('Y-m-d H:i:s'),
-          'b' => $l->battery,
+          $l->id,                                       // 'i' 0
+          $l->latitude,                                 // 'a' 1
+          $l->longitude,                                // 'n' 2
+          $l->altitude,                                 // 'd' 3
+          $l->horizontal_accuracy,                      // 'h' 4
+          $l->vertical_accuracy,                        // 'v' 5
+          ceil ($l->speed * 3.6),                       // 's' 6
+          $l->course,                                   // 'c' 7
+          strtotime ($l->time->format ('Y-m-d H:i:s')), // 't' 8
+          $l->battery,                                  // 'b' 9
         );
     }, $objs);
 
     $l = 0;
     for ($i = 0, $c = count ($objs); $i < $c; $i++)
       if ($i + 1 < $c)
-        $l += self::length ($objs[$i]['a'], $objs[$i]['n'], $objs[$i + 1]['a'], $objs[$i + 1]['n']);
+        $l += self::length ($objs[$i][1], $objs[$i][2], $objs[$i + 1][1], $objs[$i + 1][2]);
 
     $d = '';
     if ($objs) {
-      $x = strtotime ($objs[count($objs) - 1]['t']) - strtotime ($objs[0]['t']);
+      $x = $objs[count($objs) - 1][8] - $objs[0][8];
       $h = floor ($x / 3600);
       $m = floor (($x - ($h * 3600)) / 60);
       $s = $x - ($h * 3600) - ($m * 60);
@@ -58,10 +58,17 @@ class Main extends SiteController {
       $s && $d .= $s . '秒 ';
     }
 
+    $last = Location::find ('one', array ('select' => 'created_at', 'order' => 'id DESC', 'where' => array ('event_id = ?', $id)));
+
+    $p = array_2d_to_1d ($objs);
+    $t = $last ? strtotime ($last->created_at->format ('Y-m-d H:i:s')) : 0;
+
     return Output::json (array (
+        'm' => md5 (implode ('', $p)),
         'd' => $d,
         'l' => $l,
-        'p' => $objs,
+        'p' => $p,
+        't' => $t,
       ));
   }
   public function index ($id) {

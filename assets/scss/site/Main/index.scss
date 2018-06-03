@@ -127,8 +127,7 @@
     }
   }
 
-  .duration, .length {
-
+  .duration, .length, .timeago {
     position: absolute;
     bottom: 8px + 32px + 6px;
     right: 8px + 35px + 8px;
@@ -155,6 +154,15 @@
     }
     &:after {
       content: ' 公里';
+    }
+  }
+  .timeago {
+    bottom: auto;
+    right: 8px;
+    top: 8px;
+
+    &:before {
+      content: '上次上傳：';
     }
   }
   .duration {

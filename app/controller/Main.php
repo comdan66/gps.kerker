@@ -47,14 +47,24 @@ class Main extends SiteController {
         );
     }, $objs);
 
+    $distanceFilter = 20;
+
+    $nobjs = array ();
+      for ($i = 0, $c = count ($objs); $i < $c && array_push ($nobjs, $objs[$i]); $i++)
+        for ($j = $i + 1, $t = $i, $d = 0; $j < $c && $d < 10; $j++, $d++)
+          if (self::length ($objs[$t][1], $objs[$t][2], $objs[$j][1], $objs[$j][2]) <= ($objs[$j][6] > 10 ? $objs[$j][6] > 20 ? $objs[$j][6] > 30 ? 0 + 5 : 10 + 5 : 20 + 5 : 30 + 5))
+            $i = $j;
+          else
+            break;
+
     $l = 0;
-    for ($i = 0, $c = count ($objs); $i < $c; $i++)
+    for ($i = 0, $c = count ($nobjs); $i < $c; $i++)
       if ($i + 1 < $c)
-        $l += self::length ($objs[$i][1], $objs[$i][2], $objs[$i + 1][1], $objs[$i + 1][2]);
+        $l += self::length ($nobjs[$i][1], $nobjs[$i][2], $nobjs[$i + 1][1], $nobjs[$i + 1][2]);
 
     $d = '';
-    if ($objs) {
-      $x = $objs[count($objs) - 1][8] - $objs[0][8];
+    if ($nobjs) {
+      $x = $nobjs[count($nobjs) - 1][8] - $nobjs[0][8];
       $h = floor ($x / 3600);
       $m = floor (($x - ($h * 3600)) / 60);
       $s = $x - ($h * 3600) - ($m * 60);
@@ -64,15 +74,15 @@ class Main extends SiteController {
     }
 
 
-    $p = array_2d_to_1d ($objs);
+    $p = array_2d_to_1d ($nobjs);
     $t = $last ? strtotime ($last->created_at->format ('Y-m-d H:i:s')) : 0;
 
     return Output::json (array (
         'm' => md5 (implode ('', $p)),
         'd' => $d,
         'l' => $l,
-        'p' => $p,
         't' => $t,
+        'p' => $p,
       ));
   }
   public function index ($id) {

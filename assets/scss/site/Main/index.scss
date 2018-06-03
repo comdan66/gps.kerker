@@ -127,7 +127,7 @@
     }
   }
 
-  .duration, .length, .timeago {
+  .duration, .length, .timeago, .open-course {
     position: absolute;
     bottom: 8px + 32px + 6px;
     right: 8px + 35px + 8px;
@@ -158,8 +158,9 @@
   }
   .timeago {
     bottom: auto;
-    right: 8px;
+    right: auto;
     top: 8px;
+    left: 8px;
 
     &:before {
       content: '上次上傳：';
@@ -173,6 +174,111 @@
     }
     &:before {
       content: '耗時：';
+    }
+  }
+  .open-course {
+    bottom: auto;
+    top: 8px;
+    right: 8px;
+    i {
+      margin-top: (32px - 20px) / 2;
+    }
+    &:after {
+      content: '顯示方向';
+      font-size: 16px;
+      margin-left: 4px;
+    }
+  }
+}
+
+.sw {
+  $w: 20px;
+  $l: 40px;
+
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+
+  i {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    width: $l;
+    height: $w;
+    overflow: hidden;
+    @include border-radius($w / 2);
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      display: inline-block;
+
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+    &:before {
+      border: 1px solid rgba(223, 223, 223, 1.00);
+      @include border-radius($w / 2);
+      @include box-shadow(inset 0px 0px 0px 0px rgba(223, 223, 223, 1));
+      @include transition(box-shadow 0.4s, background-color .2s);
+    }
+    &:after {
+      left: 1px;
+      top: 1px;
+      width: $w - 1px * 2;
+      height: $w - 1px * 2;
+      background-color: rgba(255, 255, 255, 1.00);  
+      @include border-radius(50%);
+      @include transition(background-color 0.4s, left 0.2s);
+      @include box-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+    }
+  }
+
+  &:not(.l) {
+    &.a {
+      i {
+        &:before {
+          background-color: rgba(37, 184, 153, 1.00);
+          border-color: rgb(38, 185, 154);
+          @include box-shadow(inset 0px 0px 0px 11px rgba(38, 185, 154, 1));
+        }
+        &:after {
+          left: $l + 1px - $w;
+        }
+      }
+    }
+  }
+
+  &.l {
+    $lw: 4px;
+    cursor: not-allowed;
+
+    i {
+      width: $w;
+      height: $w;
+      margin-right: ($l - $w) / 2;
+
+      &:before {
+        border-width: 0;
+        @include box-shadow(inset 0 0 1px rgba(0, 0, 0, .15));
+        @include border-radius(50%);
+        @include background-image(linear-gradient(rgba(184, 241, 148, 1.00) 0%, rgba(89, 178, 169, 1.00) 100%));
+        @include animation(r 1s linear infinite);
+        z-index: 1;
+      }
+      &:after {
+        left: $lw;
+        top: $lw;
+        background-color: rgba(255, 255, 255, 1.00);
+        width: calc(100% - #{($lw * 2)});
+        height: calc(100% - #{($lw * 2)});
+        @include border-radius(50%);
+        @include box-shadow(0 0 1px rgba(0, 0, 0, .1));
+        z-index: 2;
+      }
     }
   }
 }

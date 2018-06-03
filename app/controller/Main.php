@@ -19,13 +19,18 @@ class Main extends SiteController {
   }
   public function path ($id) {
     $ids = array ();
-    $n1 = Location::getArray ('id', array ('where' => array ('event_id IN (?) AND speed >= ? AND horizontal_accuracy <= ?', $id, -1, 65)));
+    
+    $last = Location::find ('one', array ('select' => 'id, created_at', 'order' => 'id DESC', 'where' => array ('event_id = ?', $id)));
+
+    $n1 = Location::getArray ('id', array ('where' => array ('event_id IN (?) AND speed >= ? AND horizontal_accuracy < ?', $id, 0, 50)));
 
     for ($i = 0, $c = count ($n1), $u = ($c - 100) / 400; $i < $c; $i += $i < 100 ? 1 : $u)
       if ($m = array_slice ($n1, $i, 1))
         array_push ($ids, $m);
+    
+    $ids || $ids = array ($last ? $last->id : 0);
 
-    $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids ? $ids : array (0))));
+    $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids)));
 
     $objs = array_map (function ($l) {
       return array (
@@ -58,7 +63,6 @@ class Main extends SiteController {
       $s && $d .= $s . '秒 ';
     }
 
-    $last = Location::find ('one', array ('select' => 'created_at', 'order' => 'id DESC', 'where' => array ('event_id = ?', $id)));
 
     $p = array_2d_to_1d ($objs);
     $t = $last ? strtotime ($last->created_at->format ('Y-m-d H:i:s')) : 0;

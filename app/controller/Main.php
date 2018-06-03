@@ -25,7 +25,7 @@ class Main extends SiteController {
       if ($m = array_slice ($n1, $i, 1))
         array_push ($ids, $m);
 
-    $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids)));
+    $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids ? $ids : array (0))));
 
     $objs = array_map (function ($l) {
       return array (

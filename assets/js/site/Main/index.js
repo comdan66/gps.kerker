@@ -71,34 +71,145 @@ $(function () {
     }));
   }
 
-  function calc (v, k) {
-    k = k ? k : 3
-    var z = _gmap.zoom, u = [];
+  var Clustering = function (opts) {
+    // this.lats = [];
+    // this.lngs = [];
+    // this.merges = [];
 
-    var zs = [];
+    this.uses = [];
+    this.tmp = [];
 
-    for (var i = 0, c = v.length; i < c; i++) {
-      if (v[i]._h) continue;
+    this.opts = Object.assign ({
+      map: null,
+      unit: 3,
+      useLine: false,
+      middle: true,
+
+      latKey: 'a',
+      lngKey: 'n',
+      varKey: null,
+      markersKey: null,
+
+    }, opts);
+  };
+
+  Object.assign (
+    Clustering.prototype, {
+      clean: function () {
+        this.uses = [];
+        this.tmp = [];
+      },
+      markers: function (arr) {
+        if (!this.opts.map)
+          return [];
+
+        var that = this,
+            z = this.opts.map.zoom,
+            i = 0,
+            j = 0,
+            c = arr.length;
+
+        that.clean ();
+
+        for (; i < c; i++) {
+          if (that.uses[i])
+            continue;
+
+          that.tmp[i] = {
+            m: [arr[i]],
+            a: arr[i][that.opts.latKey],
+            n: arr[i][that.opts.lngKey],
+          };
+          that.uses[i] = true;
+
+          for (j = i + 1; j < c; j++) {
+            if (that.uses[j])
+              continue;
+
+            if ((30 / Math.pow (2, z)) / that.opts.unit <= Math.max (Math.abs (arr[i][that.opts.latKey] - arr[j][that.opts.latKey]), Math.abs (arr[i][that.opts.lngKey] - arr[j][that.opts.lngKey])))
+              if (that.opts.useLine)
+                break;
+              else
+                continue;
+
+            that.uses[j] = true;
+            that.tmp[i].m.push (arr[j]);
+          }
+        }
 
 
-      zs[i] = new google.maps.LatLng (v[i].a, v[i].n);
-      zs[i]._c = 1;
+        var ms = [];
+
+        that.tmp.forEach (function (t, i) {
+
+          var tmp = that.opts.middle ?
+            new google.maps.LatLng (t.m.map (function (u) { return u[that.opts.latKey]; }).reduce (function (a, b) { return a + b; }) / t.m.length, t.m.map (function (u) { return u[that.opts.lngKey]; }).reduce (function (a, b) { return a + b; }) / t.m.length) :
+            new google.maps.LatLng (t.a, t.n);
+
+          if (that.opts.markersKey !== null)
+            tmp[that.opts.markersKey] = t;
+
+          if (that.opts.varKey !== null)
+            tmp[that.opts.varKey] = arr[i];
+
+          ms.push (tmp);
+        });
+
+        that.clean ();
+
+        return ms;
+      }
+    }
+  );
+
+  // 座標陣列, 單位[3], 紀錄陣列, 線性, 合併
+  function calc (v, k, m, l, s) {
+    k = k ? k : 3;
+    var z = _gmap.zoom, u = [], zs = [], i = 0, j = 0, c = v.length;
+
+    for (; i < c; i++) {
+      if (v[i]._h)
+        continue;
+
+      zs[i] = {};
+      zs[i]._m = [v[i]];
       zs[i]._v = v[i];
       v[i]._h = true;
 
-      for (var j = 0; j < c; j++) {
-        if (v[j]._h) continue;
+      for (j = i + 1; j < c; j++) {
+        if (v[j]._h)
+          continue;
 
-        d = Math.max (Math.abs (v[i].a - v[j].a), Math.abs (v[i].n - v[j].n));
-        if ((30 / Math.pow (2, z)) / k > d) {
-          v[j]._h = true;
-          zs[i]._c += 1;
-        }
+        if ((30 / Math.pow (2, z)) / k <= Math.max (Math.abs (v[i].a - v[j].a), Math.abs (v[i].n - v[j].n)))
+          if (l)
+            break;
+          else
+            continue;
+
+        v[j]._h = true;
+        zs[i]._m.push (v[j]);
       }
     }
 
-    for (var i = 0, c; i < c; i++) v[i]._h = false;
-    u = []; zs.forEach (function (t) { u.push (t); });
+    for (i = 0; i < c; i++)
+      v[i]._h = false;
+
+    u = [];
+
+    zs.forEach (function (t) {
+      var x = new google.maps.LatLng (t._v.a, t._v.n);
+
+      if (s) {
+        var a = t._m.map (function (u) { return u.a; }).reduce (function (a, b) { return a + b; }) / t._m.length;
+        var n = t._m.map (function (u) { return u.n; }).reduce (function (a, b) { return a + b; }) / t._m.length;
+        
+        x = new google.maps.LatLng (a, n);
+      }
+      if (m) x._m = t._m;
+
+      x._v = t._v;
+      u.push (x);
+    });
 
     return u;
   }
@@ -122,10 +233,22 @@ $(function () {
 
   function rePath (f) {
     
-    path (calc (_ps, 2));
+    path (new Clustering ({
+      map: _gmap,
+      unit: 2,
+      middle: true,
+      useLine: true,
+      varKey: '_v'
+    }).markers (_ps));
     
     _ms = _ms.map (function (t) { t instanceof OAGM && t.setMap (null); t = null; return null; }).filter (function (t) { return t; });    
-    _ms = calc (_ps, 0.8);
+    _ms = new Clustering ({
+      map: _gmap,
+      unit: 0.8,
+      middle: true,
+      useLine: true,
+      varKey: '_v'
+    }).markers (_ps);
 
     _ms = _ms.map (function (t) {
       var s = parseInt ((_cs.length / _max) * t._v.s, 10);

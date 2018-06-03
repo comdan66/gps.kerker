@@ -56,16 +56,39 @@
 
     display: inline-block;
     width: 44px;
+
     z-index: 2;
     background-color: white;
 
-    @include box-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
-    @include border-radius(3px);
     font-size: 10px;
     color: white;
 
+    @include box-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
+    @include border-radius(3px);
+    
     > * {
-      padding: 4px 0;
+      display: inline-block;
+      width: 100%;
+      height: 22px;
+      line-height: 22px;
+      padding: 0 4px;
+
+      cursor: pointer;
+      @include transition(width .3s);
+
+      &:hover {
+        width: calc(44px + 40px);
+        &:after {
+          display: inline-block;
+        }
+      }
+
+      &:after {
+        display: none;
+        content: '公里/小時';
+        margin-left: 4px;
+        @include opacity(.5);
+      }
     }
   }
 

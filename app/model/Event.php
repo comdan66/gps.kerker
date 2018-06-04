@@ -62,6 +62,9 @@ class Event extends Model {
         );
     }, $objs);
 
+echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+var_dump (1);
+exit ();
 
     $nobjs = array ();
       for ($i = 0, $c = count ($objs); $i < $c && array_push ($nobjs, $objs[$i]); $i++)
@@ -91,9 +94,6 @@ class Event extends Model {
     $t = $last ? strtotime ($last->created_at->format ('Y-m-d H:i:s')) : 0;
 
     Load::sysFunc ('file.php');
-echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump (1);
-exit ();
 
     $this->length = $l;
     $this->save ();

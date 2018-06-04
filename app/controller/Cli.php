@@ -18,6 +18,8 @@ class Cli extends Controller {
     ini_set ('set_time_limit', 60 * 60);
   }
 
+  public function x () {
+  }
   public function clearSession () {
     Load::sysFunc ('directory.php');
     $k = config ('session', 'cookie_name');

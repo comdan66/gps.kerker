@@ -47,7 +47,9 @@ class Event extends Model {
     $ids || $ids = array ($last ? $last->id : 0);
 
     $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids)));
-
+echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+var_dump ($objs);
+exit ();
     $objs = array_map (function ($l) {
       return array (
           $l->id,                                       // 'i' 0
@@ -62,9 +64,8 @@ class Event extends Model {
           $l->battery,                                  // 'b' 9
         );
     }, $objs);
-echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump (1);
-exit ();
+
+
 
     $nobjs = array ();
       for ($i = 0, $c = count ($objs); $i < $c && array_push ($nobjs, $objs[$i]); $i++)

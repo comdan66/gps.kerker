@@ -45,11 +45,11 @@ class Event extends Model {
         array_push ($ids, $m);
     
     $ids || $ids = array ($last ? $last->id : 0);
+
+    $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids)));
 echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
 var_dump (1);
 exit ();
-
-    $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids)));
 
     $objs = array_map (function ($l) {
       return array (

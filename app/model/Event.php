@@ -61,10 +61,6 @@ class Event extends Model {
       );
     }, Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids))));
 
-echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump (1);
-exit ();
-
     $nobjs = array ();
       for ($i = 0, $c = count ($objs); $i < $c && array_push ($nobjs, $objs[$i]); $i++)
         for ($j = $i + 1, $t = $i, $d = 0; $j < $c && $d < 10; $j++, $d++)

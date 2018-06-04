@@ -43,11 +43,11 @@ class Event extends Model {
     for ($i = 0, $c = count ($tmps), $u = ($c - 100) / ($count - 100); $i < $c; $i += $i < 100 ? 1 : $u)
       if ($m = array_slice ($tmps, $i, 1))
         array_push ($ids, $m);
+    
+    $ids || $ids = array ($last ? $last->id : 0);
 echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
 var_dump (1);
 exit ();
-    
-    $ids || $ids = array ($last ? $last->id : 0);
 
     $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids)));
 

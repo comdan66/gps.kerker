@@ -18,7 +18,11 @@ class Cli extends Controller {
     ini_set ('set_time_limit', 60 * 60);
   }
 
-  public function x () {
+  public function x ($id) {
+    if (!$event = Event::find_by_id ($id))
+      exit;
+
+    $event->createJson ();
   }
   public function clearSession () {
     Load::sysFunc ('directory.php');

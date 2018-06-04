@@ -21,6 +21,7 @@ function f22 (l, c) { var arr = []; for (var i = 0; i < l.length; i++) if (typeo
 
 $(function () {
   var $body = $('body');
+  var $_maps = $('#maps');
   var _gmap = null;
   var _vp = [];
   var _ps = [];
@@ -28,12 +29,14 @@ $(function () {
   var _ter = null;
   var _max = 0;
   var _md5 = null;
+  var _timer = null;
   var _ajax = false;
   var $_cs = null;
   var $_length = null;
   var $_duration = null;
   var $_timeago = null;
   var $_openCourse = null;
+  var $_no = null;
   var _cs = ['#CCDDFF', '#99BBFF', '#5599FF', '#0066FF', '#0044BB', '#003C9D', '#003377', '#550088', '#770077'];
 
   window.oaGmap = {
@@ -61,6 +64,9 @@ $(function () {
   };
 
   function path (p) {
+    if (!p.length)
+      return;
+
     _vp = _vp.map (function (t) { t instanceof google.maps.Polyline && t.setMap (null); t = null; return null; }).filter (function (t) { return t; });
     p.forEach (function (t) {_max = t._v.s > _max ? t._v.s : _max; });
 
@@ -114,6 +120,7 @@ $(function () {
   function ajax (url, first) {
     if (_ajax)
       return ;
+
     _ajax = true;
 
     $.ajax ({
@@ -121,6 +128,7 @@ $(function () {
       async: true, cache: false, dataType: 'json', type: 'GET'
     })
     .done (function (result) {
+
       if (result.t > 0)    $_timeago.addClass ('s').text ($.OATA (result.t * 1000));
       if (result.l > 0)   $_length.addClass ('s').text (ful (result.l));
       if (result.d.length) $_duration.addClass ('s').text (result.d);
@@ -130,37 +138,31 @@ $(function () {
 
       _md5 = result.m;
 
-      _ps = f22 (result.p, 10).map (function (t) { return {
-        i: t[0],
-        a: t[1],
-        n: t[2],
-        d: t[3],
-        h: t[4],
-        v: t[5],
-        s: t[6],
-        c: t[7],
-        t: t[8],
-        b: t[9],
-      }; });
+      _ps = f22 (result.p, 10).map (function (t) { return { i: t[0], a: t[1], n: t[2], d: t[3], h: t[4], v: t[5], s: t[6], c: t[7], t: t[8], b: t[9], }; });
 
       if (_ps.length > 0) $_openCourse.addClass ('s');
 
       rePath (first);
+    })
+    .fail (function () {
+      clearInterval (_timer);
+      _timer = null;
+      $_no.addClass ('s');
     }).complete (function () { _ajax = false; });
   }
 
   oaGmap.addFunc (function () {
     initOAGM ();
 
-    var $maps = $('#maps');
-    var $gmap = $('<div />').addClass ('gmap').appendTo ($maps);
-    var $zoom = $('<div />').addClass ('zoom').append ($('<a />').addClass ('icon-02')).append ($('<a />').addClass ('icon-01')).appendTo ($maps);
+    var $gmap = $('<div />').addClass ('gmap').appendTo ($_maps);
+    var $zoom = $('<div />').addClass ('zoom').append ($('<a />').addClass ('icon-02')).append ($('<a />').addClass ('icon-01')).appendTo ($_maps);
 
-    $_cs  = $('<div />').addClass ('colors').appendTo ($maps);
-    $_length  = $('<div />').addClass ('length').appendTo ($maps);
-    $_duration  = $('<div />').addClass ('duration').appendTo ($maps);
-    $_timeago  = $('<div />').addClass ('timeago').appendTo ($maps);
-    $_openCourse  = $('<label />').addClass ('open-course').addClass ('sw').addClass ('a').append ($('<i />')).appendTo ($maps).click (function () { if ($(this).hasClass ('l')) return; $(this).toggleClass ('a'); rePath (); $(this).removeClass ('l'); });
+    $_cs  = $('<div />').addClass ('colors').appendTo ($_maps);
+    $_length  = $('<div />').addClass ('length').appendTo ($_maps);
+    $_duration  = $('<div />').addClass ('duration').appendTo ($_maps);
+    $_timeago  = $('<div />').addClass ('timeago').appendTo ($_maps);
+    $_openCourse  = $('<label />').addClass ('open-course').addClass ('sw').addClass ('a').append ($('<i />')).appendTo ($_maps).click (function () { if ($(this).hasClass ('l')) return; $(this).toggleClass ('a'); rePath (); $(this).removeClass ('l'); });
+    $_no  = $('<div />').addClass ('no').appendTo ($_maps);
 
     var position = new google.maps.LatLng (23.79539759, 120.88256835);
     _gmap = new google.maps.Map ($gmap.get (0), { zoom: 10, clickableIcons: false, disableDefaultUI: true, gestureHandling: 'greedy', center: position });
@@ -170,8 +172,8 @@ $(function () {
   
     $zoom.find ('a').click (function () { _gmap.setZoom (_gmap.zoom + ($(this).index () ? -1 : 1)); });
 
-    ajax ($maps.data ('url'), true);
-    setInterval (ajax.bind (this, $maps.data ('url'), false), 1000 * 2);
+    ajax ($_maps.data ('url'), true);
+    _timer = setInterval (ajax.bind (this, $_maps.data ('url'), false), 1000 * 2);
 
     _gmap.addListener ('zoom_changed', function () { clearTimeout (_ter); _ter = setTimeout (rePath, 350); });
   });

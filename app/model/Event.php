@@ -99,7 +99,7 @@ class Event extends Model {
       'l' => $l,
       't' => $t,
       'p' => $p,
-    )));
+    )), FOPEN_WRITE_CREATE_DESTRUCTIVE);
   }
 
   public function destroy () {

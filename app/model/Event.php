@@ -49,7 +49,7 @@ class Event extends Model {
     $objs = array_map (function ($l) {
       return array (
         $l->id,                                       // 'i' 0
-        $l->latitude,                                 // 'a' 1
+        // $l->latitude,                                 // 'a' 1
         // $l->longitude,                                // 'n' 2
         // $l->altitude,                                 // 'd' 3
         // $l->horizontal_accuracy,                      // 'h' 4

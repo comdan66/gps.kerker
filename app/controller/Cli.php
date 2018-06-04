@@ -21,6 +21,7 @@ class Cli extends Controller {
   public function x ($id) {
     if (!$event = Event::find_by_id ($id))
       exit;
+    echo "OK!";
 
     $event->createJson ();
     echo "OK!";

@@ -49,15 +49,15 @@ class Event extends Model {
     $objs = array_map (function ($l) {
       return array (
         $l->id,                                       // 'i' 0
-        // $l->latitude,                                 // 'a' 1
-        // $l->longitude,                                // 'n' 2
-        // $l->altitude,                                 // 'd' 3
-        // $l->horizontal_accuracy,                      // 'h' 4
-        // $l->vertical_accuracy,                        // 'v' 5
-        // ceil ($l->speed * 3.6),                       // 's' 6
-        // $l->course,                                   // 'c' 7
-        // strtotime ($l->time->format ('Y-m-d H:i:s')), // 't' 8
-        // $l->battery,                                  // 'b' 9
+        $l->latitude,                                 // 'a' 1
+        $l->longitude,                                // 'n' 2
+        $l->altitude,                                 // 'd' 3
+        $l->horizontal_accuracy,                      // 'h' 4
+        $l->vertical_accuracy,                        // 'v' 5
+        ceil ($l->speed * 3.6),                       // 's' 6
+        $l->course,                                   // 'c' 7
+        strtotime ($l->time->format ('Y-m-d H:i:s')), // 't' 8
+        $l->battery,                                  // 'b' 9
       );
     }, Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids))));
 

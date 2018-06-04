@@ -39,6 +39,10 @@ class Event extends Model {
     $last = Location::find ('one', array ('select' => 'id, created_at', 'order' => 'id DESC', 'where' => array ('event_id = ?', $this->id)));
     $tmps = Location::getArray ('id', array ('where' => array ('event_id IN (?) AND speed >= ? AND horizontal_accuracy < ?', $this->id, 0, $accuracyFilter)));
 
+echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+var_dump (1);
+exit ();
+
     for ($i = 0, $c = count ($tmps), $u = ($c - 100) / ($count - 100); $i < $c; $i += $i < 100 ? 1 : $u)
       if ($m = array_slice ($tmps, $i, 1))
         array_push ($ids, $m);
@@ -61,10 +65,6 @@ class Event extends Model {
           $l->battery,                                  // 'b' 9
         );
     }, $objs);
-
-echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump (1);
-exit ();
 
     $nobjs = array ();
       for ($i = 0, $c = count ($objs); $i < $c && array_push ($nobjs, $objs[$i]); $i++)

@@ -48,7 +48,7 @@ class Event extends Model {
 
     $objs = Location::find ('all', array ('select' => 'id, latitude, longitude, altitude, horizontal_accuracy, vertical_accuracy, speed, course, time, battery', 'where' => array ('id IN (?)', $ids)));
 echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump ($objs);
+var_dump (count($objs));
 exit ();
     $objs = array_map (function ($l) {
       return array (

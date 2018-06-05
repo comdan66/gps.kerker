@@ -102,12 +102,12 @@ class Event extends Model {
     for ($i = 0, $c = count ($tmps) - 1; $i < $c; $i++)
       array_push ($a, $tmps[$i + 1] - $tmps[$i]);
 
-    $a = floor (array_sum ($a) / ($c + 1));
-    $a = $b1 !== '' ? self::time (($b1 - 15) * $a) : '';
+    // $a = floor (array_sum ($a) / ($c + 1));
+    // $a = $b1 !== '' ? self::time (($b1 - 15) * $a) : '';
 
-    // $first = Location::find ('one', array ('select' => 'battery', 'order' => 'id ASC', 'where' => array ('event_id = ?', $this->id)));
-    // $b2 = $first && $first->battery !== null ? floor ($first->battery) : '';
-    // $a = $b1 !== '' && $b2 !== '' && $b1 != $b2 ? (($b1 - 15) * floor ($x / ($b2 - $b1))) : '';
+    $first = Location::find ('one', array ('select' => 'battery', 'order' => 'id ASC', 'where' => array ('event_id = ?', $this->id)));
+    $b2 = $first && $first->battery !== null ? floor ($first->battery) : '';
+    $a = $b1 !== '' && $b2 !== '' && $b1 != $b2 ? (($b1 - 15) * floor ($x / ($b2 - $b1))) : '';
 
     return write_file ($path, json_encode (array (
       'm' => md5 (implode ('', $p)),

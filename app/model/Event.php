@@ -99,8 +99,8 @@ class Event extends Model {
       'd' => $d,
       'l' => $l,
       't' => $t,
-      'p' => $p,
       'b' => $b,
+      'p' => $p,
     )), FOPEN_WRITE_CREATE_DESTRUCTIVE);
   }
 

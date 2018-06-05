@@ -36,6 +36,8 @@ $(function () {
   var $_duration = null;
   var $_timeago = null;
   var $_openCourse = null;
+  var $_remainingTime = null;
+  var $_battery = null;
   var $_no = null;
   var _cs = ['#CCDDFF', '#99BBFF', '#5599FF', '#0066FF', '#0044BB', '#003C9D', '#003377', '#550088', '#770077'];
 
@@ -130,8 +132,10 @@ $(function () {
     .done (function (result) {
 
       if (result.t > 0)    $_timeago.addClass ('s').text ($.OATA (result.t * 1000));
-      if (result.l > 0)   $_length.addClass ('s').text (ful (result.l));
+      if (result.l > 0)    $_length.addClass ('s').text (ful (result.l));
       if (result.d.length) $_duration.addClass ('s').text (result.d);
+      if (result.a.length) $_remainingTime.addClass ('s').text (result.a);
+      if (result.b.length) $_battery.addClass ('s').text (result.b);
 
       if (_md5 === result.m)
         return;
@@ -161,6 +165,8 @@ $(function () {
     $_length  = $('<div />').addClass ('length').appendTo ($_maps);
     $_duration  = $('<div />').addClass ('duration').appendTo ($_maps);
     $_timeago  = $('<div />').addClass ('timeago').appendTo ($_maps);
+    $_remainingTime  = $('<div />').addClass ('remaining-time').appendTo ($_maps);
+    $_battery  = $('<div />').addClass ('battery').appendTo ($_maps);
     $_openCourse  = $('<label />').addClass ('open-course').addClass ('sw').addClass ('a').append ($('<i />')).appendTo ($_maps).click (function () { if ($(this).hasClass ('l')) return; $(this).toggleClass ('a'); rePath (); $(this).removeClass ('l'); });
     $_no  = $('<div />').addClass ('no').appendTo ($_maps);
 

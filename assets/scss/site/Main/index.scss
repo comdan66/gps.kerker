@@ -127,11 +127,10 @@
     }
   }
 
-  .duration, .length, .timeago, .open-course {
+  .duration, .length, .timeago, .open-course, .remaining-time, .battery {
     position: absolute;
-    bottom: 8px + 32px + 6px;
-    right: 8px + 35px + 8px;
     display: none;
+
     &.s {
       display: inline-block;
     }
@@ -142,23 +141,39 @@
     background-color: white;
     padding-left: 8px;
     padding-right: 8px;
+    font-size: 13px;
+
     @include box-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
     @include border-radius(3px);
     &:before, &:after {
       font-size: 10px;
     }
   }
-  .length {
-    &:before {
-      content: '累計：';
+
+  .open-course {
+    top: 8px;
+    right: 8px;
+
+    i {
+      margin-top: (32px - 20px) / 2;
     }
     &:after {
-      content: ' 公里';
+      content: '顯示方向';
+      font-size: 13px;
+      margin-left: 4px;
     }
   }
+
+  .remaining-time {
+    top: 8px + 32px + 8px;
+    left: 8px;
+
+    &:before {
+      content: '可用：';
+    }
+  }
+
   .timeago {
-    bottom: auto;
-    right: auto;
     top: 8px;
     left: 8px;
 
@@ -166,9 +181,11 @@
       content: '上次上傳：';
     }
   }
+
   .duration {
-    bottom: 8px;
-    
+    right: 8px;
+    top: 8px + 32px + 8px;
+
     &:empty {
       display: none !important;
     }
@@ -176,19 +193,35 @@
       content: '耗時：';
     }
   }
-  .open-course {
-    bottom: auto;
-    top: 8px;
-    right: 8px;
-    i {
-      margin-top: (32px - 20px) / 2;
+
+  .battery {
+    bottom: 8px + 32px + 8px;
+    right: 8px + 35px + 8px;
+
+    &:empty {
+      display: none !important;
+    }
+    &:before {
+      content: '電力：';
     }
     &:after {
-      content: '顯示方向';
-      font-size: 16px;
-      margin-left: 4px;
+      content: ' %';
     }
   }
+
+  .length {
+    bottom: 8px;
+    right: 8px + 35px + 8px;
+
+    &:before {
+      content: '累計：';
+    }
+    &:after {
+      content: ' 公里';
+    }
+  }
+
+
   .no {
     position: absolute;
     left: 0;

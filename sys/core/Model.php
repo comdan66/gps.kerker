@@ -47,8 +47,18 @@ if (!function_exists ('use_model')) {
             $this->$column = $value;
         return true;
       }
-      public static function getArray ($column, $option = array ()) {
-        return array_orm_column (self::find ('all', array_merge ($option, array ('select' => $column))), $column);
+      public static function getArray ($columns, $option = array ()) {
+        $columns = array_filter (preg_split ('/[\s*,\s*]*,+[\s*,\s*]*/', $columns));
+        $objs = self::find ('all', array_merge ($option, array ('select' => implode (', ', $columns))));
+
+        if (count ($columns) == 1)
+          return array_orm_column ($objs, $columns[0]);
+
+        return array_map (function ($obj) use ($columns) {
+          return array_combine ($columns, array_map (function ($column) use ($obj) {
+            return $obj->{$column};
+          }, $columns));
+        }, $objs);
       }
       public static function getTransactionError ($closure, &...$args) {
         if (!is_callable ($closure))

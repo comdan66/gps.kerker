@@ -219,6 +219,11 @@
     &:after {
       content: ' 公里';
     }
+    &:not(.s), &:empty {
+      ~.battery {
+        bottom: 8px;
+      }
+    }
   }
 
 

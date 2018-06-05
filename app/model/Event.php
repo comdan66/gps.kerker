@@ -109,6 +109,7 @@ class Event extends Model {
     $b2 = $first && $first->battery !== null ? floor ($first->battery) : '';
     $a = $b1 !== '' && $b2 !== '' ? self::time (($b1 - 15) * floor ($x / ($b2 - $b1))) : '';
 
+
     return write_file ($path, json_encode (array (
       'm' => md5 (implode ('', $p)),
       'd' => $d,
@@ -117,7 +118,7 @@ class Event extends Model {
       'b' => '' . $b1,
       'a' => $a,
       'p' => $p,
-    )), FOPEN_WRITE_CREATE_DESTRUCTIVE);
+    )), FOPEN_WRITE_CREATE_DESTRUCTIVE) && @chmod ($path, 0777);
   }
 
   public function destroy () {

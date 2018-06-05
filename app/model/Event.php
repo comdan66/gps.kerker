@@ -115,7 +115,7 @@ class Event extends Model {
       'd' => $d,
       'l' => $l,
       't' => $t,
-      'b' => '' . $b1,
+      'b' => '-' . $b1,
       'a' => $a,
       'p' => $p,
     )), FOPEN_WRITE_CREATE_DESTRUCTIVE) && @chmod ($path, 0777);

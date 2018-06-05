@@ -108,7 +108,9 @@ class Event extends Model {
     $first = Location::find ('one', array ('select' => 'battery', 'order' => 'id ASC', 'where' => array ('event_id = ?', $this->id)));
     $b2 = $first && $first->battery !== null ? floor ($first->battery) : '';
     $a = $b1 !== '' && $b2 !== '' ?  (($b1 - 15) * floor ($x / ($b2 - $b1))) : '';
-
+echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+var_dump ($a);
+exit ();
 
     return write_file ($path, json_encode (array (
       'm' => md5 (implode ('', $p)),

@@ -87,7 +87,7 @@ class Event extends Model {
 
     $p = array_2d_to_1d ($nobjs);
     $t = $last ? strtotime ($last->created_at->format ('Y-m-d H:i:s')) : 0;
-    $b = $last ? $last->battery : '';
+    $b = $last && $last->battery !== null ? $last->battery : '';
 
     Load::sysFunc ('file.php');
 

@@ -107,7 +107,7 @@ class Event extends Model {
 
     $first = Location::find ('one', array ('select' => 'battery', 'order' => 'id ASC', 'where' => array ('event_id = ?', $this->id)));
     $b2 = $first && $first->battery !== null ? floor ($first->battery) : '';
-    $a = $b1 !== '' && $b2 !== '' ? self::time (($b1 - 15) * floor ($x / ($b2 - $b1))) : '';
+    $a = $b1 !== '' && $b2 !== '' ?  (($b1 - 15) * floor ($x / ($b2 - $b1))) : '';
 
 
     return write_file ($path, json_encode (array (
@@ -115,7 +115,7 @@ class Event extends Model {
       'd' => $d,
       'l' => $l,
       't' => $t,
-      'b' => '-' . $b1,
+      'b' => '' . $b1,
       'a' => $a,
       'p' => $p,
     )), FOPEN_WRITE_CREATE_DESTRUCTIVE) && @chmod ($path, 0777);

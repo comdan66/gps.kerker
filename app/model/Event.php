@@ -96,18 +96,18 @@ class Event extends Model {
     $this->length = $l;
     $this->save ();
     
-    // $a = [];
-    // $tmps = array_map (function ($t) { return strtotime ($t->format ('Y-m-d H:i:s')); }, Location::getArray ('created_at', array ('order' => 'id ASC', 'group' => 'battery', 'where' => array ('event_id = ? AND battery IS NOT NULL', $this->id))));
+    $a = [];
+    $tmps = array_map (function ($t) { return strtotime ($t->format ('Y-m-d H:i:s')); }, Location::getArray ('created_at', array ('order' => 'id ASC', 'group' => 'battery', 'where' => array ('event_id = ? AND battery IS NOT NULL', $this->id))));
     
-    // for ($i = 0, $c = count ($tmps) - 1; $i < $c; $i++)
-    //   array_push ($a, $tmps[$i + 1] - $tmps[$i]);
+    for ($i = 0, $c = count ($tmps) - 1; $i < $c; $i++)
+      array_push ($a, $tmps[$i + 1] - $tmps[$i]);
 
-    // $a = floor (array_sum ($a) / ($c + 1));
-    // $a = $b1 !== '' ? self::time (($b1 - 15) * $a) : '';
+    $a = floor (array_sum ($a) / ($c + 1));
+    $a = $b1 !== '' ? self::time (($b1 - 15) * $a) : '';
 
-    $first = Location::find ('one', array ('select' => 'battery', 'order' => 'id ASC', 'where' => array ('event_id = ?', $this->id)));
-    $b2 = $first && $first->battery !== null ? floor ($first->battery) : '';
-    $a = $b1 !== '' && $b2 !== '' && $b1 != $b2 ? (($b1 - 15) * floor ($x / ($b2 - $b1))) : '';
+    // $first = Location::find ('one', array ('select' => 'battery', 'order' => 'id ASC', 'where' => array ('event_id = ?', $this->id)));
+    // $b2 = $first && $first->battery !== null ? floor ($first->battery) : '';
+    // $a = $b1 !== '' && $b2 !== '' && $b1 != $b2 ? (($b1 - 15) * floor ($x / ($b2 - $b1))) : '';
 
     return write_file ($path, json_encode (array (
       'm' => md5 (implode ('', $p)),

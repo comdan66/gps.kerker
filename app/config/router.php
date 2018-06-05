@@ -11,7 +11,7 @@ Router::get ('(:id)', 'Main@index($1)');
 Router::get ('path/(:id)', 'Main@path($1)');
 
 Router::dir ('api', function () {
-  Router::get ('key', 'Locations@key');
+  Router::post ('key', 'Locations@key');
   Router::post ('locations', 'Locations@create');
 });
 

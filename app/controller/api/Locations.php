@@ -15,27 +15,27 @@ class Locations extends ApiController {
   }
 
   public function key () {
-    $validation = function(&$gets, &$device) {
-      Validation::need ($gets, 'uuid', 'UUID')->isStringOrNumber ()->doTrim ()->length(1, 40);
-      Validation::need ($gets, 'title', 'Title')->isStringOrNumber ()->doTrim ()->length(1, 190);
+    $validation = function(&$posts, &$device) {
+      Validation::need ($posts, 'uuid', 'UUID')->isStringOrNumber ()->doTrim ()->length(1, 40);
+      Validation::need ($posts, 'title', 'Title')->isStringOrNumber ()->doTrim ()->length(1, 190);
 
-      if (!$device = Device::find ('one', array ('select' => 'id', 'where' => array ('uuid = ?', $gets['uuid']))))
+      if (!$device = Device::find ('one', array ('select' => 'id', 'where' => array ('uuid = ?', $posts['uuid']))))
         Validation::error ('找不到該 Device');
 
-      $gets['device_id'] = $device->id;
-      unset ($gets['uuid']);
+      $posts['device_id'] = $device->id;
+      unset ($posts['uuid']);
     };
 
-    $transaction = function($gets, $device, &$event) {
-      return $event = Event::create ($gets);
+    $transaction = function($posts, $device, &$event) {
+      return $event = Event::create ($posts);
     };
 
-    $gets = Input::get ();
+    $posts = Input::post ();
 
-    if ($error = Validation::form ($validation, $gets, $device))
+    if ($error = Validation::form ($validation, $posts, $device))
       return Output::json($error, 400);
 
-    if ($error = Location::getTransactionError ($transaction, $gets, $device, $event))
+    if ($error = Location::getTransactionError ($transaction, $posts, $device, $event))
       return Output::json($error, 400);
 
     return Output::json(array (

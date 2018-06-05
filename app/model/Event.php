@@ -36,7 +36,7 @@ class Event extends Model {
 
     $ids = array ();
     
-    $last = Location::find ('one', array ('select' => 'id, created_at', 'order' => 'id DESC', 'where' => array ('event_id = ?', $this->id)));
+    $last = Location::find ('one', array ('select' => 'id, battery, created_at', 'order' => 'id DESC', 'where' => array ('event_id = ?', $this->id)));
     $tmps = Location::getArray ('id', array ('where' => array ('event_id IN (?) AND speed >= ? AND horizontal_accuracy < ?', $this->id, 0, $accuracyFilter)));
 
 

@@ -166,11 +166,11 @@ $(function () {
     $_no         = $('<div />').addClass ('no').appendTo ($_maps);
 
     var position = new google.maps.LatLng (23.79539759, 120.88256835);
-    _gmap = new google.maps.Map ($gmap.get (0), { zoom: 10, clickableIcons: false, disableDefaultUI: true, gestureHandling: 'greedy', center: position });
+    _gmap = new google.maps.Map ($_gmap.get (0), { zoom: 10, clickableIcons: false, disableDefaultUI: true, gestureHandling: 'greedy', center: position });
     _gmap.mapTypes.set ('style1', new google.maps.StyledMapType ([{featureType: 'administrative.land_parcel', elementType: 'labels', stylers: [{visibility: 'on'}]}, {featureType: 'poi', elementType: 'labels.text', stylers: [{visibility: 'off'}]}, {featureType: 'poi.business', stylers: [{visibility: 'on'}]}, {featureType: 'poi.park', elementType: 'labels.text', stylers: [{visibility: 'on'}]}, {featureType: 'road.local', elementType: 'labels', stylers: [{visibility: 'on'}]}]));
     _gmap.setMapTypeId ('style1');
   
-    $zoom.find ('a').click (function () { _gmap.setZoom (_gmap.zoom + ($(this).index () ? -1 : 1)); });
+    $_zoom.find ('a').click (function () { _gmap.setZoom (_gmap.zoom + ($(this).index () ? -1 : 1)); });
 
     ajax ($_maps.data ('url'), true);
     _timer = setInterval (ajax.bind (this, $_maps.data ('url'), false), 1000 * 2);

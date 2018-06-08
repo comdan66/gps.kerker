@@ -42,7 +42,7 @@ class Event extends Model {
   }
   public function createJson () {
     $distanceFilter = 20;
-    $accuracyFilter = 50;
+    $accuracyFilter = 66;
     $count = 500;
     $path = FCPATH . 'json' . DIRECTORY_SEPARATOR . $this->id . '.json';
 

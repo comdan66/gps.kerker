@@ -99,9 +99,12 @@ class Event extends Model {
     $this->save ();
     $timeago = strtotime ($this->updated_at->format ('Y-m-d H:i:s'));
 
-    $duration = $objs ? self::time ($objs[count($objs) - 1][8] - $objs[0][8]) : '';
+    $first = Location::find ('one', array ('select' => 'time', 'order' => 'id ASC', 'where' => array ('event_id = ?', $this->id)));
+    $last = Location::find ('one', array ('select' => 'time,battery', 'order' => 'id DESC', 'where' => array ('event_id = ?', $this->id)));
 
-    $battery = $objs && $objs[count($objs) - 1][9] != null ? $objs[count($objs) - 1][9] : '';
+    $duration = $last && $first ? self::time (strtotime ($last->time->format ('Y-m-d H:i:s')) - strtotime ($first->time->format ('Y-m-d H:i:s'))) : '';
+    $battery = $last && $last->battery != null ? $last->battery : '';
+
     $objs = array_2d_to_1d ($objs);
 
     Load::sysFunc ('file.php');

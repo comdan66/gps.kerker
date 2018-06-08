@@ -20,7 +20,8 @@ class Locations extends ApiController {
       Validation::need ($posts, 'title', 'Title')->isStringOrNumber ()->doTrim ()->length(1, 190);
 
       if (!$device = Device::find ('one', array ('select' => 'id', 'where' => array ('uuid = ?', $posts['uuid']))))
-        Validation::error ('找不到該 Device');
+        if (!$device = Device::create (array ('name' => '', 'uuid' => $posts['uuid'])))
+          Validation::error ('找不到該 Device');
 
       $posts['device_id'] = $device->id;
       unset ($posts['uuid']);

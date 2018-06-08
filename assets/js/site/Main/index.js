@@ -98,7 +98,7 @@ $(function () {
     _ms = _ms.map (function (t) { t instanceof OAGM && t.setMap (null); t = null; return null; }).filter (function (t) { return t; });
 
     if ($_openCourse.hasClass ('a'))
-      _ms = new OAMC ({map: _gmap, unit: 0.8, useLine: true, varKey: '_v'}).markers (_ps).map (function (t) {
+      _ms = new OAMC ({map: _gmap, unit: 0.8, useLine: true, middle: false, varKey: '_v'}).markers (_ps).map (function (t) {
         var s = parseInt ((_cs.length / _max) * t._v.s, 10);
 
         return new OAGM ({
@@ -169,7 +169,7 @@ $(function () {
     _gmap = new google.maps.Map ($_gmap.get (0), { zoom: 10, clickableIcons: false, disableDefaultUI: true, gestureHandling: 'greedy', center: position });
     _gmap.mapTypes.set ('style1', new google.maps.StyledMapType ([{featureType: 'administrative.land_parcel', elementType: 'labels', stylers: [{visibility: 'on'}]}, {featureType: 'poi', elementType: 'labels.text', stylers: [{visibility: 'off'}]}, {featureType: 'poi.business', stylers: [{visibility: 'on'}]}, {featureType: 'poi.park', elementType: 'labels.text', stylers: [{visibility: 'on'}]}, {featureType: 'road.local', elementType: 'labels', stylers: [{visibility: 'on'}]}]));
     _gmap.setMapTypeId ('style1');
-  
+
     $_zoom.find ('a').click (function () { _gmap.setZoom (_gmap.zoom + ($(this).index () ? -1 : 1)); });
 
     ajax ($_maps.data ('url'), true);

@@ -174,8 +174,8 @@
   }
 
   .timeago {
-    top: 8px;
-    left: 8px;
+    top: 8px + 32px + 8px + 32px + 8px;
+    right: 8px;
 
     &:before {
       content: '上次上傳：';

@@ -101,7 +101,7 @@ class Event extends Model {
 
     $duration = $objs ? self::time ($objs[count($objs) - 1][8] - $objs[0][8]) : '';
 
-    $battery = '' . ($objs && $objs[0][9] != null ? $objs[0][9] : '');
+    $battery = $objs && $objs[count($objs) - 1][9] != null ? $objs[count($objs) - 1][9] : '';
     $objs = array_2d_to_1d ($objs);
 
     Load::sysFunc ('file.php');

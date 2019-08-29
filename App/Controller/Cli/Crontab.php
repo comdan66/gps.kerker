@@ -121,4 +121,17 @@ class Crontab extends CliController {
       @unlink($path);
     }
   }
+
+  public function upEvents() {
+    $this->crontab->title = '每分鐘執行，更新路徑';
+    $start = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . '-10 min'));
+    
+    $events = \M\Event::all([
+      'select' => 'id, deviceId,token',
+      'where' => ['updateAt BETWEEN ? AND ?', $start, date('Y-m-d H:i:s')]
+    ]);
+
+    foreach ($events as $event)
+      $event->putSignals();
+  }
 }

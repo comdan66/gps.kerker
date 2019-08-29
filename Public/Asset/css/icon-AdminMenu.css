@@ -1,4 +1,4 @@
-@font-face { font-family: "icon-AdminMenu"; src: url('../font/AdminMenu/fonts/icomoon.eot?1563963596') format('embedded-opentype'), url('../font/AdminMenu/fonts/icomoon.woff?1563963596') format('woff'), url('../font/AdminMenu/fonts/icomoon.ttf?1563963596') format('truetype'), url('../font/AdminMenu/fonts/icomoon.svg?1563963596') format('svg'); }
+@font-face { font-family: "icon-AdminMenu"; src: url('../font/AdminMenu/fonts/icomoon.eot?1567069640') format('embedded-opentype'), url('../font/AdminMenu/fonts/icomoon.woff?1567069640') format('woff'), url('../font/AdminMenu/fonts/icomoon.ttf?1567069640') format('truetype'), url('../font/AdminMenu/fonts/icomoon.svg?1567069640') format('svg'); }
 *[class^="icon-AdminMenu-"]:before, *[class*=" icon-AdminMenu-"]:before { font-family: "icon-AdminMenu"; speak: none; font-style: normal; font-weight: normal; font-variant: normal; }
 
 .icon-AdminMenu-003:before { content: "\f003"; }

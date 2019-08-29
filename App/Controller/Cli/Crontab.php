@@ -121,4 +121,14 @@ class Crontab extends CliController {
       @unlink($path);
     }
   }
+
+  public function disableEvents() {
+    $this->crontab->title = '每分鐘執行，更新活動狀態';
+    
+    $events = \M\Event::all('enable = ?', \M\Event::ENABLE_YES);
+
+    $events = array_filter(array_map(function($event) {
+      return time() - strtotime($event->updateAt) > 10 * 60 ? $event->putSignals(true) : true;
+    }, $events), function($t) { return !$t; });
+  }
 }

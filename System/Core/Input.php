@@ -382,6 +382,11 @@ class Input {
     return self::getUploadFile($matches);
   }
 
+  public static function ValidGet($closure) {
+    Load::systemLib('Validator');
+    return $closure(Input::get());
+  }
+
   public static function ValidPost($closure) {
     Load::systemLib('Validator');
     return $closure(Input::post());

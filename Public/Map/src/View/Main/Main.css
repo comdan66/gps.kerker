@@ -1,0 +1,67 @@
+*, *:after, *:before { vertical-align: top; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-osx-font-smoothing: subpixel-antialiased; -webkit-font-smoothing: subpixel-antialiased; -moz-font-smoothing: subpixel-antialiased; -ms-font-smoothing: subpixel-antialiased; -o-font-smoothing: subpixel-antialiased; }
+
+@font-face { font-family: "icon"; src: url('../../Font/icomoon/fonts/icomoon.eot?1567411370') format('embedded-opentype'), url('../../Font/icomoon/fonts/icomoon.woff?1567411370') format('woff'), url('../../Font/icomoon/fonts/icomoon.ttf?1567411370') format('truetype'), url('../../Font/icomoon/fonts/icomoon.svg?1567411370') format('svg'); }
+#maps { position: fixed; top: 0; left: 0; display: inline-block; width: 100%; height: 100%; z-index: 1; }
+#maps .gmnoprint.gm-bundled-control, #maps .gm-style-cc, #maps a[href^="http://maps.google.com/maps"], #maps a[href^="https://maps.google.com/maps"] { display: none !important; }
+
+#levels { position: fixed; right: 16px; bottom: 16px; display: inline-block; z-index: 2; }
+#levels span { display: block; height: 20px; line-height: 20px; padding: 0 8px; font-size: 10px; color: white; background-color: rgba(0, 0, 255, 0.2); }
+#levels span:nth-child(1) { background-color: #f5c801; }
+#levels span:nth-child(2) { background-color: #fbbb03; }
+#levels span:nth-child(3) { background-color: #fcab0a; }
+#levels span:nth-child(4) { background-color: #fc9913; }
+#levels span:nth-child(5) { background-color: #fb871d; }
+#levels span:nth-child(6) { background-color: #fa7226; }
+#levels span:nth-child(7) { background-color: #f95d30; }
+#levels span:nth-child(8) { background-color: #f94739; }
+#levels span:nth-child(9) { background-color: #f93748; }
+#levels span:nth-child(10) { background-color: #f72b5e; }
+
+.OAMarker { display: inline-block; width: 16px; height: 16px; line-height: 14px; border: 1px solid white; background-color: #4f81c7; color: white; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%; -moz-transition: -moz-transform 0.3s; -o-transition: -o-transform 0.3s; -webkit-transition: -webkit-transform 0.3s; transition: transform 0.3s; -moz-transform: rotate(0); -ms-transform: rotate(0); -webkit-transform: rotate(0); transform: rotate(0); }
+.OAMarker:before { font-family: "icon"; speak: none; font-style: normal; font-weight: normal; font-variant: normal; content: '\f0001'; font-size: 10px; display: inline-block; -moz-transform: scale(0.8, 0.8); -ms-transform: scale(0.8, 0.8); -webkit-transform: scale(0.8, 0.8); transform: scale(0.8, 0.8); }
+.OAMarker.course1 { -moz-transform: rotate(10deg); -ms-transform: rotate(10deg); -webkit-transform: rotate(10deg); transform: rotate(10deg); }
+.OAMarker.course2 { -moz-transform: rotate(20deg); -ms-transform: rotate(20deg); -webkit-transform: rotate(20deg); transform: rotate(20deg); }
+.OAMarker.course3 { -moz-transform: rotate(30deg); -ms-transform: rotate(30deg); -webkit-transform: rotate(30deg); transform: rotate(30deg); }
+.OAMarker.course4 { -moz-transform: rotate(40deg); -ms-transform: rotate(40deg); -webkit-transform: rotate(40deg); transform: rotate(40deg); }
+.OAMarker.course5 { -moz-transform: rotate(50deg); -ms-transform: rotate(50deg); -webkit-transform: rotate(50deg); transform: rotate(50deg); }
+.OAMarker.course6 { -moz-transform: rotate(60deg); -ms-transform: rotate(60deg); -webkit-transform: rotate(60deg); transform: rotate(60deg); }
+.OAMarker.course7 { -moz-transform: rotate(70deg); -ms-transform: rotate(70deg); -webkit-transform: rotate(70deg); transform: rotate(70deg); }
+.OAMarker.course8 { -moz-transform: rotate(80deg); -ms-transform: rotate(80deg); -webkit-transform: rotate(80deg); transform: rotate(80deg); }
+.OAMarker.course9 { -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); -webkit-transform: rotate(90deg); transform: rotate(90deg); }
+.OAMarker.course10 { -moz-transform: rotate(100deg); -ms-transform: rotate(100deg); -webkit-transform: rotate(100deg); transform: rotate(100deg); }
+.OAMarker.course11 { -moz-transform: rotate(110deg); -ms-transform: rotate(110deg); -webkit-transform: rotate(110deg); transform: rotate(110deg); }
+.OAMarker.course12 { -moz-transform: rotate(120deg); -ms-transform: rotate(120deg); -webkit-transform: rotate(120deg); transform: rotate(120deg); }
+.OAMarker.course13 { -moz-transform: rotate(130deg); -ms-transform: rotate(130deg); -webkit-transform: rotate(130deg); transform: rotate(130deg); }
+.OAMarker.course14 { -moz-transform: rotate(140deg); -ms-transform: rotate(140deg); -webkit-transform: rotate(140deg); transform: rotate(140deg); }
+.OAMarker.course15 { -moz-transform: rotate(150deg); -ms-transform: rotate(150deg); -webkit-transform: rotate(150deg); transform: rotate(150deg); }
+.OAMarker.course16 { -moz-transform: rotate(160deg); -ms-transform: rotate(160deg); -webkit-transform: rotate(160deg); transform: rotate(160deg); }
+.OAMarker.course17 { -moz-transform: rotate(170deg); -ms-transform: rotate(170deg); -webkit-transform: rotate(170deg); transform: rotate(170deg); }
+.OAMarker.course18 { -moz-transform: rotate(180deg); -ms-transform: rotate(180deg); -webkit-transform: rotate(180deg); transform: rotate(180deg); }
+.OAMarker.course19 { -moz-transform: rotate(190deg); -ms-transform: rotate(190deg); -webkit-transform: rotate(190deg); transform: rotate(190deg); }
+.OAMarker.course20 { -moz-transform: rotate(200deg); -ms-transform: rotate(200deg); -webkit-transform: rotate(200deg); transform: rotate(200deg); }
+.OAMarker.course21 { -moz-transform: rotate(210deg); -ms-transform: rotate(210deg); -webkit-transform: rotate(210deg); transform: rotate(210deg); }
+.OAMarker.course22 { -moz-transform: rotate(220deg); -ms-transform: rotate(220deg); -webkit-transform: rotate(220deg); transform: rotate(220deg); }
+.OAMarker.course23 { -moz-transform: rotate(230deg); -ms-transform: rotate(230deg); -webkit-transform: rotate(230deg); transform: rotate(230deg); }
+.OAMarker.course24 { -moz-transform: rotate(240deg); -ms-transform: rotate(240deg); -webkit-transform: rotate(240deg); transform: rotate(240deg); }
+.OAMarker.course25 { -moz-transform: rotate(250deg); -ms-transform: rotate(250deg); -webkit-transform: rotate(250deg); transform: rotate(250deg); }
+.OAMarker.course26 { -moz-transform: rotate(260deg); -ms-transform: rotate(260deg); -webkit-transform: rotate(260deg); transform: rotate(260deg); }
+.OAMarker.course27 { -moz-transform: rotate(270deg); -ms-transform: rotate(270deg); -webkit-transform: rotate(270deg); transform: rotate(270deg); }
+.OAMarker.course28 { -moz-transform: rotate(280deg); -ms-transform: rotate(280deg); -webkit-transform: rotate(280deg); transform: rotate(280deg); }
+.OAMarker.course29 { -moz-transform: rotate(290deg); -ms-transform: rotate(290deg); -webkit-transform: rotate(290deg); transform: rotate(290deg); }
+.OAMarker.course30 { -moz-transform: rotate(300deg); -ms-transform: rotate(300deg); -webkit-transform: rotate(300deg); transform: rotate(300deg); }
+.OAMarker.course31 { -moz-transform: rotate(310deg); -ms-transform: rotate(310deg); -webkit-transform: rotate(310deg); transform: rotate(310deg); }
+.OAMarker.course32 { -moz-transform: rotate(320deg); -ms-transform: rotate(320deg); -webkit-transform: rotate(320deg); transform: rotate(320deg); }
+.OAMarker.course33 { -moz-transform: rotate(330deg); -ms-transform: rotate(330deg); -webkit-transform: rotate(330deg); transform: rotate(330deg); }
+.OAMarker.course34 { -moz-transform: rotate(340deg); -ms-transform: rotate(340deg); -webkit-transform: rotate(340deg); transform: rotate(340deg); }
+.OAMarker.course35 { -moz-transform: rotate(350deg); -ms-transform: rotate(350deg); -webkit-transform: rotate(350deg); transform: rotate(350deg); }
+.OAMarker.course36 { -moz-transform: rotate(360deg); -ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+.OAMarker.speed1 { background-color: #f5c801; }
+.OAMarker.speed2 { background-color: #fbbb03; }
+.OAMarker.speed3 { background-color: #fcab0a; }
+.OAMarker.speed4 { background-color: #fc9913; }
+.OAMarker.speed5 { background-color: #fb871d; }
+.OAMarker.speed6 { background-color: #fa7226; }
+.OAMarker.speed7 { background-color: #f95d30; }
+.OAMarker.speed8 { background-color: #f94739; }
+.OAMarker.speed9 { background-color: #f93748; }
+.OAMarker.speed10 { background-color: #f72b5e; }

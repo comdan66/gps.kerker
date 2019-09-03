@@ -1,0 +1,115 @@
+//
+// @author      OA Wu <comdan66@gmail.com>
+// @copyright   Copyright (c) 2015 - 2019, Ginkgo
+// @license     http://opensource.org/licenses/MIT  MIT License
+// @link        https://www.ioa.tw/
+//
+
+@import "Ginkgo";
+
+@import "compass/css3/font-face";
+
+@include font-face("icon", font-files(
+  "icomoon/fonts/icomoon.eot",
+  "icomoon/fonts/icomoon.woff",
+  "icomoon/fonts/icomoon.ttf",
+  "icomoon/fonts/icomoon.svg"));
+
+$colors: (
+  adjust-lightness(rgba(254, 220, 69, 1.00), -15%),
+  adjust-lightness(rgba(253, 208, 77, 1.00), -15%),
+  adjust-lightness(rgba(253, 197, 86, 1.00), -15%),
+  adjust-lightness(rgba(253, 186, 95, 1.00), -15%),
+  adjust-lightness(rgba(252, 175, 104, 1.00), -15%),
+  adjust-lightness(rgba(252, 163, 113, 1.00), -15%),
+  adjust-lightness(rgba(251, 151, 122, 1.00), -15%),
+  adjust-lightness(rgba(251, 140, 131, 1.00), -15%),
+  adjust-lightness(rgba(251, 129, 140, 1.00), -15%),
+  adjust-lightness(rgba(250, 117, 150, 1.00), -15%)
+);
+
+#maps {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  .gmnoprint.gm-bundled-control, .gm-style-cc, a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] {
+    display: none !important;
+  }
+}
+#levels {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: inline-block;
+  z-index: 2;
+  span {
+    display: block;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 8px;
+    font-size: 10px;
+    color: white;
+    background-color: rgba(0, 0, 255, 0.2);
+    
+    @for $i from 1 through length($colors) {
+      &:nth-child(#{$i}) {
+        background-color: nth($colors, $i);
+      }
+    }
+  }
+}
+.OAMarker {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px - 2px;
+  border: 1px solid white;
+  background-color: rgba(79, 129, 199, 1.00);
+  color: white;
+  @include border-radius(50%);
+  &:before {
+    font-family: "icon";
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+
+    content: '\f0001';
+    font-size: 10px;
+    display: inline-block;
+    @include scale(.8);
+  }
+
+  @include transition(transform .3s);
+  @include rotate(0);
+  @for $i from 1 through 36 {
+    &.course#{$i} {
+      @include rotate($i * 10deg);
+    }
+  }
+  
+  @for $i from 1 through length($colors) {
+    &.speed#{$i} {
+      background-color: nth($colors, $i);
+    }
+  }
+}
+
+// .xxx {
+//   display: inline-block;
+//   width: 30px;
+//   height: 30px;
+//   border: 1px solid rgba(255, 0, 0, .3);
+//   background-color: rgba(0, 0, 255, 0.2);
+// }
+// .xxx2 {
+//   display: inline-block;
+//   width: 30px;
+//   height: 30px;
+//   border: 1px solid rgba(255, 0, 0, .3);
+//   background-color: red;
+// }

@@ -1,25 +1,29 @@
 <?php
 
 return [
-  'up' => "CREATE TABLE `Event` (
+  'up' => "CREATE TABLE `Stop` (
     `id`        int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
 
     `deviceId`  int(11) unsigned NOT NULL COMMENT 'Device ID',
-    `title`     varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '名稱',
-    `token`     varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'token',
-    `length`    decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '長度，單位為公里',
-    `enable`    enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no' COMMENT '啟用',
-    `elapsed`   int(11) unsigned NOT NULL DEFAULT '0' COMMENT '耗時，單位為秒',
+    `eventId`   int(11) unsigned NOT NULL COMMENT '事件 ID',
+    
+    `title`     varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '標題',
+
+    `lat`       decimal(12,10) NOT NULL COMMENT '緯度',
+    `lng`       decimal(13,10) NOT NULL COMMENT '經度',
+
+    `startAt`   datetime DEFAULT NULL COMMENT '開始時間',
+    `endAt`     datetime DEFAULT NULL COMMENT '結束時間',
+    `elapsed`   int(11) unsigned NOT NULL DEFAULT '0' COMMENT '停留多久，單位為秒',
 
     `updateAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
     `createAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
-    PRIMARY KEY (`id`),
-    KEY `enable_index` (`enable`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Event 註解';",
+    PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Stop 註解';",
 
-  'down' => "DROP TABLE IF EXISTS `Event`;",
+  'down' => "DROP TABLE IF EXISTS `Stop`;",
 
-  'at' => "2019-08-29 17:07:51"
+  'at' => "2019-09-04 21:40:06"
 ];
 
 # 欄位格式

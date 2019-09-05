@@ -83,6 +83,7 @@ class Event extends Model {
       return [
         'id' => $stop->id,
         'lat' => $stop->lat,
+        'lng' => $stop->lng,
         'startAt' => strtotime($stop->startAt->format('Y-m-d H:i:s')),
         'endAt' => strtotime($stop->endAt->format('Y-m-d H:i:s')),
         'elapsed' => $stop->elapsed,

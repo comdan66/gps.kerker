@@ -79,10 +79,18 @@ class Event extends Model {
       return $signal;
     }, $signals);
 
-    $stops = \M\Stop::all([
+    $stops = array_map(function($stop) {
+      return [
+        'id' => $stop->id,
+        'lat' => $stop->lat,
+        'startAt' => strtotime($stop->startAt->format('Y-m-d H:i:s')),
+        'endAt' => strtotime($stop->endAt->format('Y-m-d H:i:s')),
+        'elapsed' => $stop->elapsed,
+      ];
+    }, \M\Stop::all([
       'order' => 'id DESC',
       'where' => ['deviceId = ? AND eventId = ?', $this->deviceId, $this->id]
-    ]);
+    ]));
 
     return \Tool::put2S3(json_encode([
       'title' => $this->title,

@@ -79,6 +79,11 @@ class Event extends Model {
       return $signal;
     }, $signals);
 
+    $stops = \M\Stop::all([
+      'order' => 'id DESC',
+      'where' => ['deviceId = ? AND eventId = ?', $this->deviceId, $this->id]
+    ]);
+
     return \Tool::put2S3(json_encode([
       'title' => $this->title,
       'length' => $this->length,
@@ -87,6 +92,7 @@ class Event extends Model {
       'updateAt' => strtotime($this->updateAt->format('Y-m-d H:i:s')),
       'speeds' => $speeds,
       'signals' => $signals,
+      'stops' => $stops
     ]), $this->token . '.json', $this->token . '.json');
   }
 }

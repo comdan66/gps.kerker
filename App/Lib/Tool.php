@@ -47,7 +47,7 @@ class Tool {
     if (!fileWrite($path, $data))
       return '發生 ' . $filename . ' 檔案寫入失敗！';
 
-    if (ENVIRONMENT !== 'Production')
+    if (ENVIRONMENT == 'Development')
       return '';
 
     Load::systemLib('S3');

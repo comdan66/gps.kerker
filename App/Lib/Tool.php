@@ -42,7 +42,7 @@ class Tool {
         return '發生 ' . $filename . ' 檔案尚未刪除(1)！';
     }
 
-    Load::systemFunc('file');
+    Load::systemFunc('File');
 
     if (!fileWrite($path, $data))
       return '發生 ' . $filename . ' 檔案寫入失敗！';

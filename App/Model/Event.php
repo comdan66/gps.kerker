@@ -11,6 +11,17 @@ class Event extends Model {
     self::ENABLE_NO  => '停用',
   ];
 
+  const PERMISSION_PUBLIC = 'public';
+  const PERMISSION_LINK = 'link';
+  const PERMISSION_FRIENDS = 'friends';
+  const PERMISSION_PRIVATE = 'private';
+  const PERMISSION = [
+    self::PERMISSION_PUBLIC => '公開', 
+    self::PERMISSION_LINK  => '鏈結',
+    self::PERMISSION_FRIENDS  => '好友',
+    self::PERMISSION_PRIVATE  => '個人',
+  ];
+
   private function getSignals() {
     $ids = array_column(\M\Signal::all([
       'select' => 'id',
@@ -59,8 +70,8 @@ class Event extends Model {
 
     $cnt = 10;
     $tmps = array_column($signals, 'speed');
-    $min = min($tmps);
-    $max = max($tmps);
+    $min = $tmps ? min($tmps) : 0;
+    $max = $tmps ? max($tmps) : 0;
     $unit = round(($max - $min + 1) / $cnt);
     $speeds = [$min];
     for ($i = 1; $i <= $cnt - 2; $i++)

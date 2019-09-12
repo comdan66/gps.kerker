@@ -392,6 +392,11 @@ class Input {
     return $closure(Input::post());
   }
 
+  public static function ValidPut($closure) {
+    Load::systemLib('Validator');
+    return $closure(Input::put());
+  }
+
   public static function ValidFile($closure) {
     Load::systemLib('Validator');
     return $closure(Input::file());

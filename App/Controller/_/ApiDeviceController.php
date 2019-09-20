@@ -6,11 +6,5 @@ abstract class ApiDeviceController extends ApiController {
 
     \M\Device::current(Input::requestHeader('DeviceUUID'));
     \M\Device::current() || error('API 錯誤！');
-
-    $name = Input::requestHeader('DeviceName');
-    if (isset($name) && \M\Device::current()->name != $name) {
-      \M\Device::current()->name = $name;
-      \M\Device::current()->save();
-    }
   }
 }

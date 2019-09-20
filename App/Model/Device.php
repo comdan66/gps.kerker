@@ -14,6 +14,9 @@ class Device extends Model {
     if ($uuid === null)
       return self::$current;
 
+    if ($uuid === '')
+      return self::$current;
+
     if (self::$current = \M\Device::one('uuid = ?', $uuid))
       return self::$current;
 

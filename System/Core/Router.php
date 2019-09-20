@@ -12,7 +12,7 @@ class Router {
   private static $requestMethod;
   private static $params = [];
   private static $className;
-  private static $methodName;
+  public static $methodName;
   private static $routers;
   private static $regxPattern = [
     'id' => '[0-9]+',

@@ -20,6 +20,4 @@ class Signal extends Model {
     self::ENABLE_YES => '啟用', 
     self::ENABLE_NO  => '停用',
   ];
-
-  const ALT = 100; // 公尺
 }

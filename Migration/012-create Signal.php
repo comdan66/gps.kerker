@@ -7,15 +7,13 @@ return [
     `deviceId`  int(11) unsigned NOT NULL COMMENT 'Device ID',
     `eventId`   int(11) unsigned NOT NULL COMMENT '事件 ID',
 
-    `lat`       decimal(12,10) NOT NULL COMMENT '緯度',
-    `lng`       decimal(13,10) NOT NULL COMMENT '經度',
+    `lat`       decimal(10,8)  NOT NULL COMMENT '緯度',
+    `lng`       decimal(11,8)  NOT NULL COMMENT '經度',
     `alt`       decimal(10,2)  DEFAULT NULL COMMENT '海拔高度，單位為公尺',
-
-    `accH`      decimal(10,2) unsigned DEFAULT NULL COMMENT '水平準度，單位為公尺',
-    `accV`      decimal(10,2) unsigned DEFAULT NULL COMMENT '垂直準度，單位為公尺',
-
-    `speed`     decimal(5,2) unsigned DEFAULT NULL COMMENT '速度，單位為每秒公尺',
-    `course`    decimal(5,2) unsigned DEFAULT NULL COMMENT '方向，北 0，南 180，東 90，西 270',
+    `accH`      decimal(10,2)  unsigned DEFAULT NULL COMMENT '水平準度，單位為公尺',
+    `accV`      decimal(10,2)  unsigned DEFAULT NULL COMMENT '垂直準度，單位為公尺',
+    `speed`     decimal(5,2)   unsigned DEFAULT NULL COMMENT '速度，單位為每秒公尺',
+    `course`    decimal(5,2)   unsigned DEFAULT NULL COMMENT '方向，北 0，南 180，東 90，西 270',
 
     `battery`       tinyint(4) unsigned DEFAULT NULL COMMENT 'GPS 裝置電量，0 ~ 100',
     `batteryStatus` enum('unknown', 'unplugged', 'charging', 'full') COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '電池狀態，未知、放電、充電、飽電(插電中)',

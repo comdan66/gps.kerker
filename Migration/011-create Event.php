@@ -1,11 +1,26 @@
 <?php
 
 return [
-  'up' => "ALTER TABLE `Event` ADD `permission` enum('public', 'link', 'friends', 'private') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'link' COMMENT '權限，公開、鏈結、好友、個人' AFTER `elapsed`;",
+  'up' => "CREATE TABLE `Event` (
+    `id`         int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `userId`     int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'User ID',
+    `deviceId`   int(11) unsigned NOT NULL COMMENT 'Device ID',
 
-  'down' => "ALTER TABLE `Event` DROP COLUMN `permission`;",
+    `title`      varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '名稱',
+    `token`      varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'token',
+    `length`     decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '長度，單位為公里',
+    `elapsed`    int(11) unsigned NOT NULL DEFAULT '0' COMMENT '耗時，單位為秒',
+    `status`     enum('moving', 'pauses', 'appCrash', 'userChange', 'finished') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'appCrash' COMMENT '狀態',
+    `permission` enum('public', 'link', 'friends', 'private') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'link' COMMENT '權限，公開、鏈結、好友、個人',
 
-  'at' => "2019-09-12 09:28:18"
+    `updateAt`   datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
+    `createAt`   datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
+    PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Event 註解';",
+
+  'down' => "DROP TABLE IF EXISTS `Event`;",
+
+  'at' => "2019-08-29 17:07:51"
 ];
 
 # 欄位格式

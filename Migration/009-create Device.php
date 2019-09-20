@@ -4,7 +4,7 @@ return [
   'up' => "CREATE TABLE `Device` (
     `id`        int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
 
-    `name`      varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Name',
+    `name`      varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Name',
     `uuid`      varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'UUID',
 
     `updateAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',

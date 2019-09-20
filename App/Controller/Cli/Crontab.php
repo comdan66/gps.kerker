@@ -125,10 +125,13 @@ class Crontab extends CliController {
   public function disableEvents() {
     $this->crontab->title = '每分鐘執行，更新活動狀態';
     
-    $events = \M\Event::all('enable = ?', \M\Event::ENABLE_YES);
+    $events = \M\Event::all('status = ?', \M\Event::STATUS_MOVING);
 
     $events = array_filter(array_map(function($event) {
-      return time() - strtotime($event->updateAt) > 10 * 60 ? $event->putSignals(true) : true;
+      if (time() - strtotime($event->updateAt) <= 10 * 60)
+        return true;
+
+      return $event->putSignals(\M\Event::STATUS_APP_CRASH);
     }, $events), function($t) { return !$t; });
   }
 }

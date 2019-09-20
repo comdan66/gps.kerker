@@ -1,25 +1,33 @@
 <?php
 
 return [
-  'up' => "CREATE TABLE `Event` (
-    `id`        int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  'up' => "CREATE TABLE `User` (
+    `id`         int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `deviceId`   int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Device ID',
 
-    `deviceId`  int(11) unsigned NOT NULL COMMENT 'Device ID',
-    `title`     varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '名稱',
-    `token`     varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'token',
-    `length`    decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '長度，單位為公里',
-    `enable`    enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no' COMMENT '啟用',
-    `elapsed`   int(11) unsigned NOT NULL DEFAULT '0' COMMENT '耗時，單位為秒',
+    `name`       varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '名稱',
+    `avatar`     varchar(50)  COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '頭貼',
+    
+    `email`      varchar(190)  COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'E-Mail',
+    `password`   varchar(190)  COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '密碼',
 
-    `updateAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
-    `createAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
-    PRIMARY KEY (`id`),
-    KEY `enable_index` (`enable`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Event 註解';",
+    `facebookId` varchar(50)  COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Facebook ID',
+    `googleId`   varchar(50)  COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Google ID',
+    
+    `loginType`  enum('general', 'facebook') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'general' COMMENT '帳號類型',
+    `level`      enum('level1', 'level2', 'level3') COLLATE utf8mb4_unicode_ci DEFAULT 'level1' COMMENT '會員等級',
+    `active`     enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no' COMMENT '是否驗證',
 
-  'down' => "DROP TABLE IF EXISTS `Event`;",
+    `token`      varchar(190) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Token',
 
-  'at' => "2019-08-29 17:07:51"
+    `updateAt`   datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
+    `createAt`   datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
+    PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='使用者';",
+
+  'down' => "DROP TABLE IF EXISTS `User`;",
+
+  'at' => "2019-09-12 13:16:09"
 ];
 
 # 欄位格式

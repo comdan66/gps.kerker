@@ -2,6 +2,13 @@
 
 class Main extends Controller {
   public function index() {
-    return View::create('index.php');
+    Log::info([
+      'method' => Router::requestMethod(),
+      'header' => Input::requestHeaders(),
+      'file' => Input::file(),
+      'get' => Input::get(),
+      'post' => Input::post(),
+    ]);
+    return 'ok';
   }
 }

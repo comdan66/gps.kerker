@@ -36,16 +36,13 @@ class Main extends Controller {
   }
 
   public function index() {
-    $str = '$GPRMC,071513.000,A,2459.8716,N,12131.2233,E,0.0,0.0,220320,3.1,W,A*17';
     if (!$data = $this->cover(Input::get('v')))
       return;
-echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump($data);
-exit();
+
     \M\Signal::create([
-      'lat'
-      'lng'
-      'memo'
+      'lat' => $data['lat'],
+      'lng' => $data['lng'],
+      'memo' => json_encode($data),
     ]);
     return 'ok';
   }

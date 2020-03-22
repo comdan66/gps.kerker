@@ -12,7 +12,7 @@ return [
     -- `timeAt`    int(11) unsigned DEFAULT NULL COMMENT 'Unix Time',
 
     -- `enable`    enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes' COMMENT '是否採用，是、否',
-    `memo`      varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '備註',
+    `memo`      text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '內容',
 
 
     `updateAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',

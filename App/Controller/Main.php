@@ -46,4 +46,8 @@ class Main extends Controller {
     ]);
     return 'ok';
   }
+  public function map() {
+    $signals = array_map('\M\toArray', \M\Signal::all(['select' => 'lat,lng', 'order' => 'id DESC']));
+    return View::create('map.php')->with('signals', $signals);
+  }
 }

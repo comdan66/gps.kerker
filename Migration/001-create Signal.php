@@ -4,8 +4,8 @@ return [
   'up' => "CREATE TABLE `Signal` (
     `id`        int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
 
-    `lat`       decimal(13,9) NOT NULL COMMENT '緯度',
-    `lng`       decimal(13,9) NOT NULL COMMENT '經度',
+    `lat`       decimal(9,6) NOT NULL COMMENT '緯度',
+    `lng`       decimal(9,6) NOT NULL COMMENT '經度',
 
     -- `speed`     decimal(5,2) unsigned DEFAULT NULL COMMENT '速度，單位為每秒公尺',
     -- `course`    decimal(5,2) unsigned DEFAULT NULL COMMENT '方向，北 0，南 180，東 90，西 270',

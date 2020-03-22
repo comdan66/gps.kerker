@@ -61,7 +61,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 
           new google.maps.Marker({
             map: _mMap,
-            position: signals[signals.length - 1],
+            position: signals[0],
           });
 
           new google.maps.Polyline({
@@ -71,7 +71,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 
           _mMap.setCenter(signals[signals.length - 1]);
           _mMap.setZoom(16);
-          
+
           // $reload.click(function() {
           //   $loading.removeClass('hide');
 

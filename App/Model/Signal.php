@@ -10,21 +10,68 @@ class Signal extends Model {
     self::ENABLE_NO  => '停用',
   ];
 
-  public static function createByGet() {
-    $param = \Input::get('v');
-    $result = self::parse($param);
+  public static function length($aa, $an, $ba, $bn) {
+    $aa = deg2rad($aa);
+    $bb = deg2rad($an);
+    $cc = deg2rad($ba);
+    $dd = deg2rad($bn);
+    return (2 * asin(sqrt(pow(sin(($aa - $cc) / 2), 2) + cos($aa) * cos($cc) * pow(sin(($bb - $dd) / 2), 2)))) * 6378137;
+  }
+
+  public static function points($ids) {
+    $c = count($ids);
+
+    $tmps = [];
+    $unit = ($c - 100) / 300;
+
+    for ($i = 0; $i < $c; $i += $i < 100 ? 1 : $unit)
+      if ($m = $ids[$i])
+        array_push($tmps, $m);
+
+    if (!$d = count($tmps))
+      return $tmps;
     
+    if ($tmps[$d - 1] != $ids[$c - 1])
+      array_push($tmps, $ids[$c - 1]);
+
+    return $tmps;
+  }
+
+  static $afterCreates = ['caleLen'];
+
+  public function caleLen() {
+    if ($this->enable != Signal::ENABLE_YES) return true;
+    
+    $signals = array_map('\M\toArray', Signal::all(['select' => 'lat,lng', 'where' => ['eventId = ? AND enable = ?', $this->eventId, Signal::ENABLE_YES]]));
+
+    $length = 0;
+    for ($i = 1, $signals, $c = count($signals); $i < $c; $i++)
+      $length += Signal::length(
+        $signals[$i - 1]['lat'], $signals[$i - 1]['lng'],
+        $signals[$i]['lat'], $signals[$i]['lng']);
+    
+    return \M\Event::updateAll(['length' => round($length / 1000, 2)], ['where' => ['id = ?', $this->eventId]]);
+  }
+
+  public static function createBy($get) {
+    $param    = $get['v'] ?? null;
+    $deviceId = $get['d'] ?? 0;
+    $result   = self::parse($deviceId, $param);
+
     return is_array($result)
       ? Signal::create($result)
       : Signal::create([
-          'enable' => Signal::ENABLE_NO,
-          'memo' => is_string($result) ? $result : 'Parse 回傳錯誤',
-          'param' => $param
-        ]);
+        'enable' => Signal::ENABLE_NO,
+        'memo' => is_string($result) ? $result : 'Parse 回傳錯誤',
+        'param' => $param
+      ]);
   }
 
-  private static function parse($param) {
-    if (!is_string($param = \Input::get('v'))) return '非字串';
+  private static function parse($deviceId, $param) {
+    if (!$eventId = Event::last('deviceId = ?', $deviceId)) return '錯誤的 Event';
+    $eventId = $eventId->id;
+
+    if (!is_string($param)) return '非字串';
     if (count($strs = explode(',', $param)) != 13) return 'token長度非13';
     if (!is_string($prefix = array_shift($strs))) return '前綴錯誤1';
     if ($prefix != '$GPRMC') return '前綴錯誤2';
@@ -84,17 +131,23 @@ class Signal extends Model {
     
     if (!is_string($mode = array_shift($strs))) return 'Mode 錯誤';
 
+    $last = Signal::last('eventId = ? AND enable = ?', $eventId, Signal::ENABLE_YES);
+    $memo = $last && $last->lat === $lat && $last->lng === $lng ? '資料一樣' : '';
+
     return [
-      'lat' => $lat,
-      'lng' => $lng,
-      'speed' => $speed,
-      'course' => $course,
-      'timeAt' => $datetime,
+      'eventId'     => $eventId,
+      'lat'         => $lat,
+      'lng'         => $lng,
+      'speed'       => $speed,
+      'course'      => $course,
+      'timeAt'      => $datetime,
       'declination' => $declination,
-      'mode' => $mode,
-      'param' => $param,
-      'memo' => '',
-      'enable' => Signal::ENABLE_YES,
+      'mode'        => $mode,
+      'param'       => $param,
+      'memo'        => $memo,
+      'enable'      => $memo
+        ? Signal::ENABLE_NO
+        : Signal::ENABLE_YES,
     ];
   }
 }

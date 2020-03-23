@@ -1,29 +1,19 @@
 <?php
 
 return [
-  'up' => "CREATE TABLE `Signal` (
+  'up' => "CREATE TABLE `Device` (
     `id`        int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
 
-    `lat`         decimal(9,6)      DEFAULT NULL COMMENT '緯度',
-    `lng`         decimal(9,6)      DEFAULT NULL COMMENT '經度',
-    `speed`       decimal(5,2)      unsigned DEFAULT NULL COMMENT '速度，單位為每小時公里',
-    `course`      decimal(5,2)      unsigned DEFAULT NULL COMMENT '方向，北 0，南 180，東 90，西 270',
-    `timeAt`      datetime          DEFAULT NULL COMMENT 'GPS 時間',
-    `declination` decimal(4,1)      DEFAULT NULL COMMENT '磁偏角-180~180，西W 為負數',
-
-    `mode`        varchar(20)       COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Mode',
-    `enable`      enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '啟用',
-    `memo`        varchar(190)      COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '備註',
-    `param`       varchar(190)      COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '參數',
+    `name`      varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '名稱',
 
     `updateAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
     `createAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
     PRIMARY KEY (`id`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Signal 註解';",
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Device 註解';",
 
-  'down' => "DROP TABLE IF EXISTS `Signal`;",
+  'down' => "DROP TABLE IF EXISTS `Device`;",
 
-  'at' => "2020-03-22 16:12:21"
+  'at' => "2020-03-23 16:08:12"
 ];
 
 # 欄位格式

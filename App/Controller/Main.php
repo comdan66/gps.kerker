@@ -3,32 +3,49 @@
 class Main extends Controller {
 
   public function index() {
-    // if (!$data = $this->cover(Input::get('v')))
-    //   return;
+    return \M\Signal::createBy(Input::get() ?? [])
+      ? 'ok'
+      : 'no';
+  }
 
-    // \M\Signal::create([
-    //   'lat' => $data['lat'],
-    //   'lng' => $data['lng'],
-    //   'memo' => json_encode($data),
-    // ]);
+  public function cover() {
+    $eventId = 1;
+    $signals = \M\Signala::all();
 
-    \M\Signal::createByGet();
-    return 'ok';
+    foreach ($signals as $signal) {
+      $data = json_decode($signal->memo, true);
+      
+      $last = \M\Signal::last('eventId = ? AND enable = ?', $eventId, \M\Signal::ENABLE_YES);
+      $memo = $last && $last->lat === $signal->lat && $last->lng === $signal->lng ? '資料一樣' : '';
+
+      \M\Signal::create([
+        'eventId'     => $eventId,
+        'lat'         => $signal->lat,
+        'lng'         => $signal->lng,
+        'speed'       => round($data['speed'] * 1.852, 2),
+        'course'      => round(0 + $data['course'], 1),
+        'timeAt'      => $data['datetime'],
+        'declination' => $data['declination'],
+        'mode'        => $data['mode'],
+        'param'       => $signal->memo,
+        'memo'        => $memo,
+        'enable'      => $memo
+          ? \M\Signal::ENABLE_NO
+          : \M\Signal::ENABLE_YES,
+      ]);
+    }
   }
 
   public function map() {
-    // $signals = \M\Signala::all(['select' => 'lat,lng,memo', 'order' => 'id DESC']);
-    
-    // foreach ($signals as $signal) {
-      // $memo = json_decode($signal->memo, true);
-      // \M\Signal::
-      // echo $memo['course'] . " - " . $memo['speed'] . " - " . ($memo['speed'] * 1.852) . " - " . ($memo['speed'] * 3.6) . '<br>';
-    // }
+    if (!$event = \M\Event::one(Router::param('id')))
+      return 'GG';
 
-    // $str = '$GPRMC,,V,,,,,,,,,,N*53';
-    // $str = '$GPRMC,061009.000,A,2459.8682,N,12131.2094,E,0.0,0.0,220320,3.1,W,A*1B';
-    // $str = '$GPRMC,071513.000,A,2459.8716,N,12131.2233,E,0.0,0.0,220320,3.1,W,A*17';
-    // $signals = array_map('\M\toArray', \M\Signal::all(['select' => 'lat,lng', 'order' => 'id DESC']));
-    // return View::create('map.php')->with('signals', $signals);
+    return [
+      'title' => $event->title,
+      'length' => $event->length,
+      'signals' => array_map('\M\toArray', \M\Signal::all([
+        'select' => 'lat,lng,speed,course',
+        'where' => ['eventId = ? AND enable = ?', $event->id, \M\Signal::ENABLE_YES]]))
+    ];
   }
 }

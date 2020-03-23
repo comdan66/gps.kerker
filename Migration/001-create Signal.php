@@ -4,16 +4,17 @@ return [
   'up' => "CREATE TABLE `Signal` (
     `id`        int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
 
-    `lat`       decimal(9,6) NOT NULL COMMENT '緯度',
-    `lng`       decimal(9,6) NOT NULL COMMENT '經度',
+    `lat`         decimal(9,6)      DEFAULT NULL COMMENT '緯度',
+    `lng`         decimal(9,6)      DEFAULT NULL COMMENT '經度',
+    `speed`       decimal(5,2)      unsigned DEFAULT NULL COMMENT '速度，單位為每小時公里',
+    `course`      decimal(5,2)      unsigned DEFAULT NULL COMMENT '方向，北 0，南 180，東 90，西 270',
+    `timeAt`      datetime          DEFAULT NULL COMMENT 'GPS 時間',
+    `declination` decimal(4,1)      DEFAULT NULL COMMENT '磁偏角-180~180，西W 為負數',
 
-    -- `speed`     decimal(5,2) unsigned DEFAULT NULL COMMENT '速度，單位為每秒公尺',
-    -- `course`    decimal(5,2) unsigned DEFAULT NULL COMMENT '方向，北 0，南 180，東 90，西 270',
-    -- `timeAt`    int(11) unsigned DEFAULT NULL COMMENT 'Unix Time',
-
-    -- `enable`    enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes' COMMENT '是否採用，是、否',
-    `memo`      text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '內容',
-
+    `mode`        varchar(20)       COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Mode',
+    `enable`      enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '啟用',
+    `memo`        varchar(190)      COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '備註',
+    `param`       varchar(190)      COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '參數',
 
     `updateAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
     `createAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',

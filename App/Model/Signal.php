@@ -55,7 +55,7 @@ class Signal extends Model {
 
   public static function createBy($get) {
     $param    = $get['v'] ?? null;
-    $deviceId = $get['d'] ?? 0;
+    $deviceId = $get['d'] ?? 1;
     $result   = self::parse($deviceId, $param);
 
     return is_array($result)

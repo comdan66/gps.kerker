@@ -70,7 +70,8 @@ class Signal extends Model {
         'enable' => Signal::ENABLE_NO,
         'memo' => is_string($result) ? $result : 'Parse 回傳錯誤',
         'param' => $param,
-        'valid' => Signal::VALID_NO
+        'valid' => Signal::VALID_NO,
+        'createAt' => '2020-03-24 09:35:27'
       ]);
   }
 

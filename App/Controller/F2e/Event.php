@@ -12,6 +12,7 @@ class Event extends F2eApiController {
 
     return [
       'title' => $event->title,
+      'live' => $event->status != \M\Event::STATUS_FINISH,
       'status' => $event->status,
       'length' => $event->length,
       'elapsed' => $event->elapsed,

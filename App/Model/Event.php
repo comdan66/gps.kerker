@@ -22,13 +22,12 @@ class Event extends Model {
 
   public function genCode() {
     \Load::lib('Code');
-    $this->code = \Code::encode($this->id, 5);
 
-    $url = \config('F2e', 'baseUrl') . '/?' . $this->code;
+    $url = \config('F2e', 'baseUrl') . '/?' . \Code::encode($this->id, 5);
     self::lineNotify('oa', '要回家囉，關注最新位置請點：' . $url);
     ENVIRONMENT == 'Development' || self::lineNotify('shari', '胖波要回家囉，關注最新位置請點：' . $url);
 
-    return $this->save();
+    return true;
   }
   private function lineNotify($tokenKey, $message) {
     if (!$token = \config('LineNotify', $tokenKey))

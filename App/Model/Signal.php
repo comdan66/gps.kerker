@@ -75,7 +75,7 @@ class Signal extends Model {
   }
 
   private static function parse($deviceId, $param, &$event) {
-    if (!$event = Event::last('deviceId = ? AND status IN (?)', $deviceId, [\M\Event::STATUS_MOVING, \M\Event::STATUS_ERROR]))
+    if (!$event = Event::last('deviceId = ? AND status IN (?)', $deviceId, [\M\Event::STATUS_NO_SIGNAL, \M\Event::STATUS_MOVING, \M\Event::STATUS_ERROR]))
       if (!$event = Event::create(['deviceId' => $deviceId, 'title' => date('Y-m-d H:i:s')]))
         return '錯誤的 Event';
 

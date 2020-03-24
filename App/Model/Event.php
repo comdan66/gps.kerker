@@ -17,4 +17,12 @@ class Event extends Model {
   static $relations = [
     'lastSignal' => ['hasOne' => 'Signal', 'order' => 'id DESC'],
   ];
+
+  static $afterCreates = ['genCode'];
+
+  public function genCode() {
+    \Load::lib('Code');
+    $this->code = \Code::encode(1, 5);
+    return $this->save();
+  }
 }

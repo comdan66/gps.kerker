@@ -7,7 +7,7 @@ class Event extends F2eApiController {
   }
 
   public function show() {
-    $event = \M\Event::one(Router::param('id'));
+    $event = \M\Event::one('code = ?', Router::param('code'));
     $event || error('您沒有權限查看喔！');
 
     return [

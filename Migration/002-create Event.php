@@ -5,7 +5,7 @@ return [
     `id`        int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
     
     `deviceId`  int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'Device ID',
-    
+    `code`      varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'code',
     `title`     varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '標題',
     `length`    decimal(7,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '長度，單位為公里',
     `elapsed`   int(11) unsigned NOT NULL DEFAULT '0' COMMENT '耗時，單位為秒',
@@ -13,7 +13,8 @@ return [
 
     `updateAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
     `createAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY `code_index` (`code`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Event 註解';",
 
   'down' => "DROP TABLE IF EXISTS `Event`;",

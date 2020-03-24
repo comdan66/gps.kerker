@@ -18,7 +18,22 @@ class Signal extends Model {
 
   static $afterCreates = ['caleLen'];
 
+  private function notify($id) {
+    \Load::lib('Code');
+    \Load::lib('Notify');
+    $url = \config('F2e', 'baseUrl') . '/?' . \Code::encode($id, 5);
+
+    \Notify::line('oa', 'GPS 移動要開始囉，最新位置請點：' . $url);
+    
+    ENVIRONMENT == 'Development'
+      || \Notify::line('shari', 'GPS 移動要開始囉，最新位置請點：' . $url);
+  }
+
   public function caleLen() {
+    Signal::count('eventId = ? AND enable = ?', $this->eventId, Signal::ENABLE_YES) == 1
+      && $this->enable == Signal::ENABLE_YES
+      && $this->notify($this->eventId);
+
     $status = $this->valid == Signal::VALID_YES ? \M\Event::STATUS_MOVING : \M\Event::STATUS_ERROR;
 
     if (!$first = Signal::one(['select' => 'createAt', 'where' => ['eventId = ? AND id != ?', $this->eventId, $this->id]]))

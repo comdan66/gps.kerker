@@ -9,6 +9,11 @@ class Event extends CliController {
 
       $event->status = \M\Event::STATUS_FINISH;
       $event->save();
+
+      Load::lib('Notify');
+      Notify::line('oa', 'GPS 活動已經結束囉！');
+    
+      ENVIRONMENT == 'Development' || \Notify::line('shari', 'GPS 活動已經結束囉！');
     }
   }
 }

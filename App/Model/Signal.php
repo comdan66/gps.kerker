@@ -58,20 +58,19 @@ class Signal extends Model {
     return (2 * asin(sqrt(pow(sin(($aa - $cc) / 2), 2) + cos($aa) * cos($cc) * pow(sin(($bb - $dd) / 2), 2)))) * 6378137;
   }
 
-  public static function createBy($get, $createAt = null) {
+  public static function createBy($get) {
     $param    = $get['v'] ?? null;
     $deviceId = $get['d'] ?? 1;
     $result   = self::parse($deviceId, $param, $event);
 
     return is_array($result)
-      ? Signal::create($createAt ? array_merge($result, ['createAt' => $createAt]) : $result)
+      ? Signal::create($result)
       : Signal::create([
         'eventId' => $event ? $event->id : 0,
         'enable' => Signal::ENABLE_NO,
         'memo' => is_string($result) ? $result : 'Parse 回傳錯誤',
         'param' => $param,
-        'valid' => Signal::VALID_NO,
-        'createAt' => $createAt
+        'valid' => Signal::VALID_NO
       ]);
   }
 

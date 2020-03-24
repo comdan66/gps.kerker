@@ -26,7 +26,7 @@ class Event extends Model {
 
     $url = \config('F2e', 'baseUrl') . '/?' . $this->code;
     self::lineNotify('oa', '要回家囉，關注最新位置請點：' . $url);
-    ENVIRONMENT == 'Development' || self::lineNotify('shari', '要回家囉，關注最新位置請點：' . $url);
+    ENVIRONMENT == 'Development' || self::lineNotify('shari', '胖波要回家囉，關注最新位置請點：' . $url);
 
     return $this->save();
   }

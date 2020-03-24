@@ -22,7 +22,7 @@ class Event extends Model {
 
   public function genCode() {
     \Load::lib('Code');
-    $this->code = \Code::encode(1, 5);
+    $this->code = \Code::encode($this->id, 5);
     return $this->save();
   }
 }

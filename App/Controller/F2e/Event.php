@@ -8,12 +8,14 @@ class Event extends F2eApiController {
 
   public function show() {
     $event = \M\Event::one(Router::param('id'));
-    $event || error('GG');
+    $event || error('您沒有權限查看喔！');
 
     return [
       'title' => $event->title,
-      'title' => $event->title,
+      'status' => $event->status,
       'length' => $event->length,
+      'elapsed' => $event->elapsed,
+      'updateAt' => strtotime($event->lastSignal ? $event->lastSignal->createAt : $event->updateAt),
       'signals' => array_map('\M\toArray', \M\Signal::all([
         'select' => 'lat,lng,speed,course',
         'where' => ['eventId = ? AND enable = ?', $event->id, \M\Signal::ENABLE_YES]]))

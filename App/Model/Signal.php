@@ -9,6 +9,46 @@ class Signal extends Model {
     self::ENABLE_YES => '啟用', 
     self::ENABLE_NO  => '停用',
   ];
+  const VALID_YES = 'yes';
+  const VALID_NO  = 'no';
+  const VALID = [
+    self::VALID_YES => '有效', 
+    self::VALID_NO  => '無效',
+  ];
+
+  static $afterCreates = ['caleLen'];
+
+  public function caleLen() {
+    $status = $this->valid == Signal::VALID_YES ? \M\Event::STATUS_MOVING : \M\Event::STATUS_ERROR;
+
+    if (!$first = Signal::one(['select' => 'createAt', 'where' => ['eventId = ? AND id != ?', $this->eventId, $this->id]]))
+      return \M\Event::updateAll([
+        'status' => $status,
+      ], ['where' => ['id = ?', $this->eventId]]);
+
+    $elapsed = strtotime($this->createAt) - strtotime($first->createAt);
+    $elapsed > 0 || $elapsed = 0;
+
+    if ($this->enable != Signal::ENABLE_YES)
+      return \M\Event::updateAll([
+        'status' => $status,
+        'elapsed' => $elapsed,
+      ], ['where' => ['id = ?', $this->eventId]]);
+
+    $signals = array_map('\M\toArray', Signal::all(['select' => 'lat,lng', 'where' => ['eventId = ? AND enable = ?', $this->eventId, Signal::ENABLE_YES]]));
+
+    $length = 0;
+    for ($i = 1, $signals, $c = count($signals); $i < $c; $i++)
+      $length += Signal::length(
+        $signals[$i - 1]['lat'], $signals[$i - 1]['lng'],
+        $signals[$i]['lat'], $signals[$i]['lng']);
+    
+    return \M\Event::updateAll([
+      'status' => $status,
+      'elapsed' => $elapsed,
+      'length' => round($length / 1000, 2),
+    ], ['where' => ['id = ?', $this->eventId]]);
+  }
 
   public static function length($aa, $an, $ba, $bn) {
     $aa = deg2rad($aa);
@@ -18,58 +58,27 @@ class Signal extends Model {
     return (2 * asin(sqrt(pow(sin(($aa - $cc) / 2), 2) + cos($aa) * cos($cc) * pow(sin(($bb - $dd) / 2), 2)))) * 6378137;
   }
 
-  public static function points($ids) {
-    $c = count($ids);
-
-    $tmps = [];
-    $unit = ($c - 100) / 300;
-
-    for ($i = 0; $i < $c; $i += $i < 100 ? 1 : $unit)
-      if ($m = $ids[$i])
-        array_push($tmps, $m);
-
-    if (!$d = count($tmps))
-      return $tmps;
-    
-    if ($tmps[$d - 1] != $ids[$c - 1])
-      array_push($tmps, $ids[$c - 1]);
-
-    return $tmps;
-  }
-
-  static $afterCreates = ['caleLen'];
-
-  public function caleLen() {
-    if ($this->enable != Signal::ENABLE_YES) return true;
-    
-    $signals = array_map('\M\toArray', Signal::all(['select' => 'lat,lng', 'where' => ['eventId = ? AND enable = ?', $this->eventId, Signal::ENABLE_YES]]));
-
-    $length = 0;
-    for ($i = 1, $signals, $c = count($signals); $i < $c; $i++)
-      $length += Signal::length(
-        $signals[$i - 1]['lat'], $signals[$i - 1]['lng'],
-        $signals[$i]['lat'], $signals[$i]['lng']);
-    
-    return \M\Event::updateAll(['length' => round($length / 1000, 2)], ['where' => ['id = ?', $this->eventId]]);
-  }
-
-  public static function createBy($get) {
+  public static function createBy($get, $createAt = null) {
     $param    = $get['v'] ?? null;
     $deviceId = $get['d'] ?? 1;
-    $result   = self::parse($deviceId, $param);
+    $result   = self::parse($deviceId, $param, $event);
 
     return is_array($result)
-      ? Signal::create($result)
+      ? Signal::create($createAt ? array_merge($result, ['createAt' => $createAt]) : $result)
       : Signal::create([
+        'eventId' => $event ? $event->id : 0,
         'enable' => Signal::ENABLE_NO,
         'memo' => is_string($result) ? $result : 'Parse 回傳錯誤',
-        'param' => $param
+        'param' => $param,
+        'valid' => Signal::VALID_NO,
+        'createAt' => $createAt
       ]);
   }
 
-  private static function parse($deviceId, $param) {
-    if (!$eventId = Event::last('deviceId = ?', $deviceId)) return '錯誤的 Event';
-    $eventId = $eventId->id;
+  private static function parse($deviceId, $param, &$event) {
+    if (!$event = Event::last('deviceId = ? AND status IN (?)', $deviceId, [\M\Event::STATUS_MOVING, \M\Event::STATUS_ERROR]))
+      if (!$event = Event::create(['deviceId' => $deviceId, 'title' => date('Y-m-d H:i:s')]))
+        return '錯誤的 Event';
 
     if (!is_string($param)) return '非字串';
     if (count($strs = explode(',', $param)) != 13) return 'token長度非13';
@@ -123,19 +132,26 @@ class Signal extends Model {
     $datetime = $datetime->format('Y-m-d H:i:s');
     if (strlen($datetime) != 19) return '日期時間錯誤2';
 
-    if (!is_numeric($declinationV = array_shift($strs))) return '磁偏角錯誤1';
-    if (!is_string($declinationD = array_shift($strs))) return '磁偏角錯誤2';
-    if (!in_array($declinationD, ['E', 'W'])) return '磁偏角錯誤3';
-    $declination = ($declinationD == 'W' ? -1 : 1) * $declinationV;
-    if ($declination < -180 || $declination > 180) return '磁偏角錯誤4';
-    
-    if (!is_string($mode = array_shift($strs))) return 'Mode 錯誤';
+    $memos = [];
 
-    $last = Signal::last('eventId = ? AND enable = ?', $eventId, Signal::ENABLE_YES);
+    is_numeric($declinationV = array_shift($strs)) || array_push($memos, '磁偏角錯誤1');
+    is_string($declinationD = array_shift($strs))  || array_push($memos, '磁偏角錯誤2');
+    
+    if (!$memos) {
+      in_array($declinationD, ['E', 'W']) || array_push($memos, '磁偏角錯誤3');
+      $memos || $declination = ($declinationD == 'W' ? -1 : 1) * $declinationV;
+      if ($declination < -180 || $declination > 180) array_push($memos, '磁偏角錯誤4');
+    }
+    $declination ?? $declination = null;
+    
+    if (!is_string($mode = array_shift($strs))) $memo = 'Mode 錯誤';
+
+    $last = Signal::last('eventId = ? AND enable = ?', $event->id, Signal::ENABLE_YES);
     $memo = $last && $last->lat === $lat && $last->lng === $lng ? '資料一樣' : '';
+    $memo && array_push($memos, $memo);
 
     return [
-      'eventId'     => $eventId,
+      'eventId'     => $event->id,
       'lat'         => $lat,
       'lng'         => $lng,
       'speed'       => $speed,
@@ -144,10 +160,11 @@ class Signal extends Model {
       'declination' => $declination,
       'mode'        => $mode,
       'param'       => $param,
-      'memo'        => $memo,
+      'memo'        => implode('，', $memos),
       'enable'      => $memo
         ? Signal::ENABLE_NO
         : Signal::ENABLE_YES,
+      'valid' => Signal::VALID_YES
     ];
   }
 }

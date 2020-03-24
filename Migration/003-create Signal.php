@@ -17,6 +17,7 @@ return [
     `memo`        varchar(190)      COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '備註',
     `param`       varchar(190)      COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '參數',
     `enable`      enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '啟用',
+    `valid`       enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '有效的訊號',
 
     `updateAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
     `createAt`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
